@@ -4,7 +4,7 @@ import { ScreenWrapper } from 'react-native-screen-wrapper'
 import { Height, Width } from '../../utils/Dimentions'
 import AppCollors from '../../utils/AppCollors';
 import { useNavigation } from '@react-navigation/native';
-import ScreenNames from '../../routes/route';
+import ScreenNames, { screenMapping } from '../../routes/route';
 
 
 
@@ -30,14 +30,14 @@ export default function Header() {
 
     const renderItem = ({ item }) => {
         return (
-            <TouchableOpacity style={styles.btn_main}>
+            <TouchableOpacity style={styles.btn_main} onPress={() => navigation.navigate(screenMapping[item], { item })}>
                 <Text style={styles.btn_text}>{item}</Text>
             </TouchableOpacity>
         )
     }
     return (
         <View style={styles.container}>
-            <TouchableOpacity onPress={() => navigation.navigate(ScreenNames.Home)}>
+            <TouchableOpacity onPress={() => navigation.navigate(ScreenNames.HOME)}>
 
 
                 <Image source={require('../../assets/images/jamia-logo.png')} style={styles.img_Logo} />
