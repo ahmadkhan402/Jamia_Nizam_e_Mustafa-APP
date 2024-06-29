@@ -5,7 +5,7 @@ import AppCollors from '../../utils/AppCollors';
 
 export default function Button({ label, press, style }) {
     return (
-        <TouchableOpacity style={styles.container} onPress={press}>
+        <TouchableOpacity style={[styles.container, style]} onPress={press}>
             <Text style={styles.text}>{label}</Text>
         </TouchableOpacity>
     );
@@ -19,7 +19,7 @@ const styles = StyleSheet.create({
         justifyContent: 'center',
         borderRadius: 10,
         elevation: 5,
-        marginTop: Height(5)
+        marginTop: Height(2)
     },
     text: {
         fontSize: 20,

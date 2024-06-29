@@ -116,25 +116,25 @@ export default function HomeScreen() {
                         <YoutubePlayer
                             height={120}
                             width={190}
-                            play={true}
+                            play={false}
                             videoId={vedioList.Link1}
                         />
                         <YoutubePlayer
                             height={120}
                             width={190}
-                            play={true}
+                            play={false}
                             videoId={vedioList.Link2} // Replace with your YouTube video ID
                         />
                         <YoutubePlayer
                             height={120}
                             width={190}
-                            play={true}
+                            play={false}
                             videoId={vedioList.Link3}
                         />
                         <YoutubePlayer
                             height={120}
                             width={190}
-                            play={true}
+                            play={false}
                             videoId={vedioList.Link4} // Replace with your YouTube video ID
                         />
                     </View>

@@ -108,7 +108,7 @@ export default function OnlineCoursesScreen() {
                         ان شرائط و ضوابطہ کا مطالعہ کرنے کے بعد داخلہ حاصل کرنے کے لئے مندرجہ ذیل لنک سے داخلہ فارم فل کر کے بھیجیں ِ
                     </Text>
                     <View style={styles.btn_View}>
-                        <Button label="داخلہ فارم" press={() => navigation.navigate(ScreenNames.ADDMISSION)} />
+                        <Button label="داخلہ فارم" press={() => navigation.navigate(ScreenNames.ADDMISSION)} style={styles.btn} />
                     </View>
                 </View>
             </View>
@@ -214,6 +214,8 @@ const styles = StyleSheet.create({
         fontSize: 14,
         flex: 1,
     },
-
+    btn: {
+        marginTop: Height(5)
+    }
 
 });
