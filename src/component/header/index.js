@@ -12,7 +12,7 @@ export default function Header() {
     const navigation = useNavigation();
     const data = [
         'سرورق',
-        'ہمارے متعلق',
+        // 'ہمارے متعلق',
         'اغراض ومقاصد',
         'شعبہ جات',
         'آن لائن کورسز',
