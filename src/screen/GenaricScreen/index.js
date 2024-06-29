@@ -1,29 +1,50 @@
 import { useNavigation, useRoute } from '@react-navigation/native';
-import React from 'react';
+import React, { useEffect } from 'react';
 import { View, Text, StyleSheet } from 'react-native';
 import Header from '../../component/header';
 import Purpose from '../../component/purpose';
 import AppCollors from '../../utils/AppCollors';
 import DepartmentsScreen from '../../component/department';
 import ScreenNames from '../../routes/route';
+import OnlineCoursesScreen from '../../component/courses';
+import LecturesScreen from '../../component/lectures';
+import SyllabusScreen from '../../component/Syllabus';
+import ResultsScreen from '../../component/Results';
+import AffiliationScreen from '../../component/Affiliation';
+import LibraryScreen from '../../component/Library';
+import GalleryScreen from '../../component/Gallery';
+import NewsSectionScreen from '../../component/NewsSection';
+import DarAlIftaScreen from '../../component/DarAlIfta';
+import BlogScreen from '../../component/Blog';
+import ContactUsScreen from '../../component/ContactUs';
 
 export default function GenaricScreen() {
     const route = useRoute()
     const item = route.params.item
     const navigation = useNavigation()
+    useEffect(() => {
+        if (item === 'سرورق') {
+            navigation.navigate(ScreenNames.HOME);
+        }
+    }, [item, navigation]);
+
     return (
         <>
             <Header />
             <View style={styles.container}>
-                {item === 'سرورق' &&
-                    navigation.navigate(ScreenNames.HOME)
-                }
-                {item === "اغراض ومقاصد" &&
-                    <Purpose />
-                }
-                {item === 'شعبہ جات' &&
-                    <DepartmentsScreen />
-                }
+                {item === "اغراض ومقاصد" && <Purpose />}
+                {item === 'شعبہ جات' && <DepartmentsScreen />}
+                {item === 'آن لائن کورسز' && <OnlineCoursesScreen />}
+                {item === 'لیکچرز' && <LecturesScreen />}
+                {item === 'نصاب' && <SyllabusScreen />}
+                {item === 'نتائج' && <ResultsScreen />}
+                {item === 'الحاق' && <AffiliationScreen />}
+                {item === 'لائبریری' && <LibraryScreen />}
+                {item === 'گیلری' && <GalleryScreen />}
+                {item === 'نیوز سیکشن' && <NewsSectionScreen />}
+                {item === 'دارالافتاء' && <DarAlIftaScreen />}
+                {item === 'بلاگ' && <BlogScreen />}
+                {item === 'رابطہ کریں' && <ContactUsScreen />}
             </View>
         </>
     );
