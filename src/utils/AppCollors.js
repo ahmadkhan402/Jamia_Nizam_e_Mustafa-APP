@@ -8,6 +8,7 @@ const AppCollors = {
     danger: '#ff5252',
     success: '#4cd137',
     red: "#D12529",
-    bgLight: "#4F6550"
+    bgLight: "#4F6550",
+    btn_bg: "#449D44"
 }
 export default AppCollors

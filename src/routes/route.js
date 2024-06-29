@@ -13,6 +13,7 @@ const ScreenNames = {
     DAR_AL_IFTA: 'دارالافتاء',
     BLOG: 'بلاگ',
     CONTACT_US: 'رابطہ کریں',
+    ADDMISSION: 'Addmision',
 };
 
 const screenMapping = {

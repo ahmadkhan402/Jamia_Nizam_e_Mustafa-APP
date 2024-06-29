@@ -32,8 +32,8 @@ export default function GenaricScreen() {
         <>
             <Header />
             <View style={styles.container}>
-                {item === "اغراض ومقاصد" && <Purpose />}
-                {item === 'شعبہ جات' && <DepartmentsScreen />}
+                {/* {item === "اغراض ومقاصد" && <Purpose />} */}
+                {/* {item === 'شعبہ جات' && <DepartmentsScreen />} */}
                 {item === 'آن لائن کورسز' && <OnlineCoursesScreen />}
                 {item === 'لیکچرز' && <LecturesScreen />}
                 {item === 'نصاب' && <SyllabusScreen />}

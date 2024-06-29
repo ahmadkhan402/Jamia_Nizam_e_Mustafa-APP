@@ -7,6 +7,7 @@ import ScreenNames, { screenMapping } from './route';
 import HomeScreen from '../screen/home';
 import PurposeScreen from '../screen/GenaricScreen';
 import GenaricScreen from '../screen/GenaricScreen';
+import AddmissionScreen from '../screen/admisstion';
 
 const Stack = createNativeStackNavigator();
 
@@ -22,6 +23,7 @@ export default function Routes() {
                         component={GenaricScreen}
                     />
                 ))}
+                <Stack.Screen name={ScreenNames.ADDMISSION} component={AddmissionScreen} />
             </Stack.Navigator>
         </NavigationContainer>
     );
