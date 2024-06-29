@@ -57,7 +57,6 @@ export default function HomeScreen() {
     ];
 
     const renderItem = ({ item }) => {
-        console.log("item", item);
         return (
             <View style={styles.gallery_item}>
                 <Image source={item.Link} style={{ resizeMode: "cover", width: Width(40), height: Height(20), marginHorizontal: Width(0.5) }} />
