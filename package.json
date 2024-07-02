@@ -21,7 +21,8 @@
     "react-native-screens": "^3.32.0",
     "react-native-swiper": "^1.6.0",
     "react-native-webview": "^13.10.4",
-    "react-native-youtube-iframe": "^2.3.0"
+    "react-native-youtube-iframe": "^2.3.0",
+    "expo-image-picker": "~15.0.6"
   },
   "devDependencies": {
     "@babel/core": "^7.20.0"

@@ -28,7 +28,7 @@ export default function OnlineCoursesScreen() {
                 <View style={styles.item_View}>
                     <Text style={styles.item_Text}>ان شرائط و ضوابطہ کا مطالعہ کرنے کے بعد داخلہ حاصل کرنے کے لئے مندرجہ ذیل لنک سے داخلہ فارم فل کر کے بھیجیں.</Text>
                     <View style={styles.btn_View}>
-                        <Button label="داخلہ فارم" press={() => navigation.navigate(ScreenNames.ADDMISSION)} />
+                        <Button label="داخلہ فارم" press={() => navigation.navigate(ScreenNames.ADDMISSION, { value: 'شعبہ ناظرۃ و تجوید' })} />
                     </View>
                 </View>
             </View>
@@ -47,7 +47,7 @@ export default function OnlineCoursesScreen() {
                         ان شرائط و ضوابطہ کا مطالعہ کرنے کے بعد داخلہ حاصل کرنے کے لئے مندرجہ ذیل لنک سے داخلہ فارم فل کر کے بھیجیں ِ
                     </Text>
                     <View style={styles.btn_View}>
-                        <Button label="داخلہ فارم" press={() => navigation.navigate(ScreenNames.ADDMISSION)} />
+                        <Button label="داخلہ فارم" press={() => navigation.navigate(ScreenNames.ADDMISSION, { value: 'شعبہ حفظ' })} />
                     </View>
                 </View>
             </View>
@@ -89,7 +89,7 @@ export default function OnlineCoursesScreen() {
                         ان شرائط و ضوابطہ کا مطالعہ کرنے کے بعد داخلہ حاصل کرنے کے لئے مندرجہ ذیل لنک سے داخلہ فارم فل کر کے بھیجیں ِ
                     </Text>
                     <View style={styles.btn_View}>
-                        <Button label="داخلہ فارم" press={() => navigation.navigate(ScreenNames.ADDMISSION)} />
+                        <Button label="داخلہ فارم" press={() => navigation.navigate(ScreenNames.ADDMISSION, { value: 'شعبہ درس نظامی (عالم کورس)للبنین والبنات' })} />
                     </View>
                 </View>
             </ScreenWrapper>
@@ -108,7 +108,7 @@ export default function OnlineCoursesScreen() {
                         ان شرائط و ضوابطہ کا مطالعہ کرنے کے بعد داخلہ حاصل کرنے کے لئے مندرجہ ذیل لنک سے داخلہ فارم فل کر کے بھیجیں ِ
                     </Text>
                     <View style={styles.btn_View}>
-                        <Button label="داخلہ فارم" press={() => navigation.navigate(ScreenNames.ADDMISSION)} style={styles.btn} />
+                        <Button label="داخلہ فارم" press={() => navigation.navigate(ScreenNames.ADDMISSION, { value: 'شارٹ کورسز' })} style={styles.btn} />
                     </View>
                 </View>
             </View>
@@ -131,22 +131,24 @@ export default function OnlineCoursesScreen() {
     };
 
     return (
-        <View style={styles.container}>
-            <Picker
-                selectedValue={selectedCourse}
-                onValueChange={(itemValue) => setSelectedCourse(itemValue)}
-                style={styles.picker}
-            >
-                <Picker.Item label="کورس منتخب کریں۔" value="" />
-                <Picker.Item label="شعبہ ناظرۃ و تجوید" value="شعبہ ناظرۃ و تجوید" />
-                <Picker.Item label="شعبہ حفظ" value="شعبہ حفظ" />
-                <Picker.Item label="شعبہ درس نظامی (عالم کورس)للبنین والبنات" value="شعبہ درس نظامی (عالم کورس)للبنین والبنات" />
-                <Picker.Item label="شارٹ کورسز" value="شارٹ کورسز" />
-            </Picker>
-            <View style={styles.contentContainer}>
-                {renderContent()}
+        <ScreenWrapper scrollType='scroll' statusBarColor={AppCollors.primary}>
+            <View style={styles.container}>
+                <Picker
+                    selectedValue={selectedCourse}
+                    onValueChange={(itemValue) => setSelectedCourse(itemValue)}
+                    style={styles.picker}
+                >
+                    <Picker.Item label="کورس منتخب کریں۔" value="" />
+                    <Picker.Item label="شعبہ ناظرۃ و تجوید" value="شعبہ ناظرۃ و تجوید" />
+                    <Picker.Item label="شعبہ حفظ" value="شعبہ حفظ" />
+                    <Picker.Item label="شعبہ درس نظامی (عالم کورس)للبنین والبنات" value="شعبہ درس نظامی (عالم کورس)للبنین والبنات" />
+                    <Picker.Item label="شارٹ کورسز" value="شارٹ کورسز" />
+                </Picker>
+                <View style={styles.contentContainer}>
+                    {renderContent()}
+                </View>
             </View>
-        </View>
+        </ScreenWrapper>
     );
 }
 

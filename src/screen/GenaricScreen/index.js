@@ -17,6 +17,7 @@ import NewsSectionScreen from '../../component/NewsSection';
 import DarAlIftaScreen from '../../component/DarAlIfta';
 import BlogScreen from '../../component/Blog';
 import ContactUsScreen from '../../component/ContactUs';
+import { ScreenWrapper } from 'react-native-screen-wrapper';
 
 export default function GenaricScreen() {
     const route = useRoute()
@@ -29,7 +30,7 @@ export default function GenaricScreen() {
     }, [item, navigation]);
 
     return (
-        <>
+        <ScreenWrapper scrollType='none' statusBarColor={AppCollors.primary}>
             <Header />
             <View style={styles.container}>
                 {/* {item === "اغراض ومقاصد" && <Purpose />} */}
@@ -46,7 +47,7 @@ export default function GenaricScreen() {
                 {item === 'بلاگ' && <BlogScreen />}
                 {item === 'رابطہ کریں' && <ContactUsScreen />}
             </View>
-        </>
+        </ScreenWrapper>
     );
 }
 const styles = StyleSheet.create({
