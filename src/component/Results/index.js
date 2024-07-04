@@ -13,7 +13,6 @@ export default function ResultsScreen() {
         grade: '',
         rollNumber: ''
     });
-
     const handleInputChange = (field, value) => {
         setForm({ ...form, [field]: value });
     };
