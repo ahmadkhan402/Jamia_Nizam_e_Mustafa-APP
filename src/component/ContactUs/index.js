@@ -4,8 +4,8 @@ import FrontView from '../frontView';
 
 export default function ContactUsScreen() {
     return (
-        <View>
+        <ScreenWrapper scrollType='scroll'>
             <FrontView text={"Contact Us"} />
-        </View>
+        </ScreenWrapper>
     );
 }
