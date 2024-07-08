@@ -1,18 +1,16 @@
 import { View, Text, StyleSheet, Image, FlatList } from 'react-native'
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import { ScreenWrapper } from 'react-native-screen-wrapper'
 import Header from '../../component/header'
 import Swiper from 'react-native-swiper'
 import { Height, Width } from '../../utils/Dimentions'
 import AppCollors from '../../utils/AppCollors'
 import YoutubePlayer from "react-native-youtube-iframe";
+import { getYoutubeLink } from '../../api'
 export default function HomeScreen() {
-    const vedioList = {
-        Link1: "hR9R9-Z4yhg",
-        Link2: "hR9R9-Z4yhg",
-        Link3: "kqkGJb7hYv4",
-        Link4: "z9cc9KaHTkg"
-    }
+    const [youTubeLink, setYoutubeLink] = useState([])
+
+
     const imageList = [
         {
             id: 1,
@@ -56,6 +54,19 @@ export default function HomeScreen() {
         },
     ];
 
+    const getYoutubeLinks = async () => {
+        const res = await getYoutubeLink()
+        const { lectures } = res
+        const data = lectures.map((item) => {
+            return item.youtube
+        })
+
+        setYoutubeLink(data)
+
+    }
+    useEffect(() => {
+        getYoutubeLinks()
+    }, [])
     const renderItem = ({ item }) => {
         return (
             <View style={styles.gallery_item}>
@@ -106,38 +117,7 @@ export default function HomeScreen() {
                             آپ اپنی بساط کے مطابق اس نیک عمل میں حصہ ڈال کر شریک ہو سکتے ہیں عطیات و صدقات کے لئیے ناظم جامعہ سے رابطہ کریں 0304165565 , 03348688053
                         </Text>
                     </View>
-                    <View style={styles.content_View}>
-                        <Text style={styles.content_Text}>
-                            لیکچرز کی نئی ویدیوز
-                        </Text>
 
-                    </View>
-                    <View style={styles.video_View}>
-                        <YoutubePlayer
-                            height={120}
-                            width={190}
-                            play={false}
-                            videoId={vedioList.Link1}
-                        />
-                        <YoutubePlayer
-                            height={120}
-                            width={190}
-                            play={false}
-                            videoId={vedioList.Link2} // Replace with your YouTube video ID
-                        />
-                        <YoutubePlayer
-                            height={120}
-                            width={190}
-                            play={false}
-                            videoId={vedioList.Link3}
-                        />
-                        <YoutubePlayer
-                            height={120}
-                            width={190}
-                            play={false}
-                            videoId={vedioList.Link4} // Replace with your YouTube video ID
-                        />
-                    </View>
                     <View style={[styles.content_View, { marginBottom: 0 }]}>
                         <Text style={styles.content_Text}>
                             Media / Gallery
@@ -151,6 +131,31 @@ export default function HomeScreen() {
                             horizontal={true}
                         />
                     </View>
+
+                    <View style={styles.content_View}>
+                        <Text style={styles.content_Text}>
+                            لیکچرز کی نئی ویدیوز
+                        </Text>
+
+                    </View>
+                    <View style={styles.video_View}>
+
+                        {
+                            youTubeLink.map((item, index) => (
+
+                                <YoutubePlayer
+                                    key={index}
+                                    height={120}
+                                    width={190}
+                                    play={false}
+                                    videoId={item}
+                                />
+                            ))
+                        }
+
+
+                    </View>
+
 
                 </View>
             </ScreenWrapper>
@@ -253,8 +258,9 @@ const styles = StyleSheet.create({
         color: AppCollors.white
     },
     video_View: {
-        width: Width(100),
-        height: Height(30),
+        // width: Width(100),
+        // height: Height(30),
+        flex: 1,
         flexDirection: 'row',
         justifyContent: 'space-around',
         flexWrap: 'wrap',

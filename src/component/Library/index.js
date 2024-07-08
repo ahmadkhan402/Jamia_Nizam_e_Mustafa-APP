@@ -4,9 +4,10 @@ import { ScreenWrapper } from 'react-native-screen-wrapper';
 import FrontView from '../frontView';
 import BooksCardComponents from '../booksCard';
 import styles from './styles';
+import AppCollors from '../../utils/AppCollors';
 export default function LibraryScreen() {
     return (
-        <ScreenWrapper scrollType='scroll'>
+        <ScreenWrapper scrollType='scroll' statusBarColor={AppCollors.primary}>
             <FrontView text="لائبریری" />
             <View style={styles.cardDisplay}>
                 <BooksCardComponents bookImg={{ uri: "https://nizamemustafa.com/images/bukhari.png" }} bookName={"بکهری"} downloadBtn={"دانلود"} />

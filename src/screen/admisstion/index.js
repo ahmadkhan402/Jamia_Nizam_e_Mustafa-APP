@@ -1,5 +1,5 @@
 import { Picker } from '@react-native-picker/picker';
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { View, Text, TextInput, Button, ScrollView, StyleSheet, TouchableOpacity, Image } from 'react-native';
 import { Height, Width } from '../../utils/Dimentions';
 import { ScreenWrapper } from 'react-native-screen-wrapper';
@@ -7,11 +7,19 @@ import FrontView from '../../component/frontView';
 import { useRoute } from '@react-navigation/native';
 import * as ImagePicker from 'expo-image-picker';
 import AppCollors from '../../utils/AppCollors';
+import { addmissionData } from '../../api';
+import { getCountryData, getCountryDataList } from 'countries-list';
+import * as FileSystem from 'expo-file-system';
+import RadioButtonRN from 'radio-buttons-react-native';
+import Checkbox from 'expo-checkbox';
 
 export default function AddmissionScreen() {
     const route = useRoute();
     const departmentText = route.params.value
 
+    const [countryList, setCountryList] = useState([]);
+    const [image, setImage] = useState(null);
+    const [base64Image, setBase64Image] = useState("");
     const [form, setForm] = useState({
         name: '',
         father: '',
@@ -20,21 +28,43 @@ export default function AddmissionScreen() {
         email: '',
         mobile: '',
         country: 'Pakistan',
-        image: null
+        picture: null,
+        province: "",
+        city: "",
+        address: '',
+        class: '',
+        course: '',
+        fee: "",
+        formaleducation: "",
+        address: '',
+        islamiceducation: '',
+        others: "",
     });
+    const [selectedCountry, setSelectedCountry] = useState('Select Country');
+    const [dropdownVisible, setDropdownVisible] = useState(false);
+    const [isChecked, setChecked] = useState(false);
 
+    const toggleDropdown = () => {
+        setDropdownVisible(!dropdownVisible);
+    };
+
+    const handleCountrySelect = (country) => {
+        setSelectedCountry(country);
+        setDropdownVisible(false);
+    };
     const handleInputChange = (field, value) => {
         setForm({ ...form, [field]: value });
     };
 
-    const handleSubmit = () => {
-        // Handle form submission
-        console.log(form);
+    const handleSubmit = async () => {
+        console.log("form", form);
+        const res = await addmissionData(form);
+        console.log('====================================');
+        console.log(res);
+        console.log('====================================');
     };
 
-    console.log('====================================');
-    console.log(form.image);
-    console.log('====================================');
+
     const pickImage = async () => {
         let result = await ImagePicker.requestMediaLibraryPermissionsAsync();
         if (result.granted === false) {
@@ -50,10 +80,38 @@ export default function AddmissionScreen() {
         });
 
         if (!pickerResult.canceled) {
-            handleInputChange('image', pickerResult.assets[0].uri);
+            // handleInputChange('image', pickerResult.assets[0].uri);
+            setImage(pickerResult.assets[0].uri);
+            convertToBase64(pickerResult.assets[0].uri);
+
+        }
+    };
+    const convertToBase64 = async (uri) => {
+        try {
+            const base64 = await FileSystem.readAsStringAsync(uri, {
+                encoding: FileSystem.EncodingType.Base64,
+            });
+            handleInputChange('picture', base64);
+        } catch (error) {
+            console.error("Error converting image to Base64:", error);
         }
     };
 
+
+    const data = [
+        {
+            label: ' Yes, I agree'
+        },
+
+    ];
+    useEffect(() => {
+        const res = getCountryDataList()
+        const countrylist = res.map((item) => {
+            return item.name
+        })
+        setCountryList(countrylist)
+
+    }, [])
     return (
         <ScreenWrapper scrollType='scroll' statusBarColor={AppCollors.primary}>
             <FrontView text={'داخلہ فارم (آن لائن کورسز)'} text1={departmentText} />
@@ -123,24 +181,126 @@ export default function AddmissionScreen() {
                         </View>
                         <View style={styles.formGroup}>
                             <Text style={styles.label}>Country Name (ملک) <Text style={styles.required}>*</Text></Text>
-                            <Picker
-                                selectedValue={form.country}
+
+
+
+                            <TouchableOpacity onPress={toggleDropdown} style={styles.dropdown}>
+                                <Text style={styles.dropdownText}> {selectedCountry ? selectedCountry : 'Select Country'}</Text>
+                            </TouchableOpacity>
+
+                            {dropdownVisible && (
+                                <View style={styles.dropdownList}>
+                                    {countryList.map((item, index) => (
+
+                                        <TouchableOpacity key={index} onPress={() => handleCountrySelect(item)} style={styles.dropdownItem}>
+                                            <Text style={styles.dropdownItemText}>{item}</Text>
+                                        </TouchableOpacity>
+                                    ))}
+                                </View>
+                            )}
+
+                        </View >
+                        <View style={styles.formGroup}>
+                            <Text style={styles.label}>Province (صوبہ) <Text style={styles.required}>*</Text></Text>
+                            <TextInput
                                 style={styles.input}
-                                onValueChange={(itemValue) => handleInputChange('country', itemValue)}
+                                value={form.province}
+                                onChangeText={(value) => handleInputChange('province', value)}
+                                placeholder="Enter province"
+                                keyboardType="default"
+                            />
+                        </View>
+                        <View style={styles.formGroup}>
+                            <Text style={styles.label}>City (شہر) <Text style={styles.required}>*</Text></Text>
+                            <TextInput
+                                style={styles.input}
+                                value={form.city}
+                                onChangeText={(value) => handleInputChange('city', value)}
+                                placeholder="Enter city"
+                                keyboardType="default"
+                            />
+                        </View>
+                        <View style={styles.formGroup}>
+                            <Text style={styles.label}>Address (مکمل ایڈریس) <Text style={styles.required}>*</Text></Text>
+                            <TextInput
+                                style={styles.input}
+                                value={form.address}
+                                onChangeText={(value) => handleInputChange('address', value)}
+                                placeholder="Enter Address"
+                                keyboardType="default"
+                            />
+                        </View>
+
+                        <View style={styles.formGroup}>
+                            <Text style={styles.label}>Course Name (کورس کا انتخاب) <Text style={styles.required}>*</Text></Text>
+                            <Picker
+                                selectedValue={form.course}
+                                style={styles.input}
+                                onValueChange={(itemValue) => handleInputChange('course', itemValue)}
                             >
-                                <Picker.Item label="Pakistan" value="Pakistan" />
-                                <Picker.Item label="Afghanistan" value="Afghanistan" />
-                                <Picker.Item label="India" value="India" />
+                                <Picker.Item label="شعبہ ناظرۃ و تجوید" value="شعبہ ناظرۃ و تجوید" />
+
                                 {/* Add more countries as needed */}
                             </Picker>
                         </View>
+                        <View style={styles.formGroup}>
+                            <Text style={styles.label}>Registration Fee (داخلہ فیس) <Text style={styles.required}>*</Text></Text>
+                            <TextInput
+                                style={styles.input}
+                                value={form.fee}
+                                onChangeText={(value) => handleInputChange('fee', value)}
+                                placeholder="Rs.500"
+                                keyboardType="default"
+                            />
+                        </View>
+                        <View style={styles.formGroup}>
+                            <Text style={styles.label}>Islamic Education & Institute Name (دینی تعلیم ، ادارہ کا نام) <Text style={styles.required}>*</Text></Text>
+                            <TextInput
+                                style={styles.input}
+                                value={form.islamiceducation}
+                                onChangeText={(value) => handleInputChange('islamiceducation', value)}
+                                placeholder="Enter Islamic Education & Institute Name"
+                                keyboardType="default"
+                            />
+                        </View>
+                        <View style={styles.formGroup}>
+                            <Text style={styles.label}>Secular Education & Institute Name (دنیاوی تعلیم، ادارہ کا نام) <Text style={styles.required}>*</Text></Text>
+                            <TextInput
+                                style={styles.input}
+                                value={form.formaleducation}
+                                onChangeText={(value) => handleInputChange('formaleducation', value)}
+                                placeholder="Enter Secular Education & Institute Name"
+                                keyboardType="default"
+                            />
+                        </View>
+                        <View style={styles.formGroup}>
+                            <Text style={styles.label}>Other Details (مزید تفصیلات) <Text style={styles.required}>*</Text></Text>
+                            <TextInput
+                                style={styles.input}
+                                value={form.others}
+                                onChangeText={(value) => handleInputChange('others', value)}
+                                placeholder="Enter other details"
+                                keyboardType="default"
+                            />
+                        </View>
                         <TouchableOpacity onPress={pickImage} style={styles.imagePicker}>
-                            {form.image ? (
-                                <Image source={{ uri: form.image }} style={styles.image} />
+                            {image ? (
+                                <Image source={{ uri: image }} style={styles.image} />
                             ) : (
                                 <Text style={styles.imageText}>Choose an image</Text>
                             )}
                         </TouchableOpacity>
+                        <Text style={styles.text}>" I confess under oath that the above data is my personal. I swear I will abide by all the rules And my purpose in joining this group is just to get a religious education,Other than that, there is no hidden or visible purpose."</Text>
+                        <Text style={styles.text}>میں حلفیہ طورپر اقرارکرتا ہوں کہ مذکورہ بالا کوائف میرے زاتی ہیں میں قسم کھاتا ہوں کہ میں تمام قواعد کی پابندی کرونگا اوراس گروپ میں شامل ہونیکا مقصد صرف دینی تعلیم کا حصول ہے اسکے علاوہ کوئی چھپا ظاہر مقصد نہیں ہے</Text>
+                        <View style={styles.section}>
+                            <Checkbox
+                                style={styles.checkbox}
+                                value={isChecked}
+                                onValueChange={setChecked}
+                                color={isChecked ? AppCollors.secondary : undefined}
+                            />
+                            <Text style={styles.paragraph}>Yes, I agree</Text>
+                        </View>
                         <Button title="Submit" onPress={handleSubmit} />
                     </View>
                 </View>
@@ -152,6 +312,10 @@ export default function AddmissionScreen() {
 const styles = StyleSheet.create({
     container: {
         padding: 20,
+    },
+    paragraph: {
+        fontSize: 14,
+        marginLeft: Width(2)
     },
     box: {
         backgroundColor: '#f8f8f8',
@@ -205,5 +369,49 @@ const styles = StyleSheet.create({
     imageText: {
         color: '#888',
         fontSize: 18,
+    },
+    label: {
+        fontSize: 16,
+        marginBottom: 10,
+    },
+    required: {
+        color: 'red',
+    },
+    dropdown: {
+        padding: 10,
+        borderWidth: 1,
+        borderColor: '#ccc',
+        borderRadius: 5,
+    },
+    dropdownText: {
+        fontSize: 16,
+
+    },
+    dropdownList: {
+        marginTop: 5,
+        borderWidth: 1,
+        borderColor: '#cccs',
+        borderRadius: 5,
+    },
+    dropdownItem: {
+        padding: 10,
+        borderTopColor: 'black',
+        borderTopWidth: 1,
+    },
+    dropdownItemText: {
+        fontSize: 16,
+    },
+    text: {
+        fontSize: 14,
+        textAlign: 'justify',
+        marginBottom: 10,
+    },
+    section: {
+        flexDirection: "row",
+        alignItems: "center",
+        marginBottom: 10,
+    },
+    checkbox: {
+        margin: 8,
     },
 });

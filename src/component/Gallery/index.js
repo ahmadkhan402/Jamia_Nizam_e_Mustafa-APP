@@ -3,6 +3,7 @@ import { View, Text, Image } from 'react-native';
 import { ScreenWrapper } from 'react-native-screen-wrapper';
 import FrontView from '../frontView';
 import styles from './styles';
+import AppCollors from '../../utils/AppCollors';
 
 export default function GalleryScreen() {
     const path = [
@@ -49,7 +50,7 @@ export default function GalleryScreen() {
     ];
 
     return (
-        <ScreenWrapper scrollType='scroll'>
+        <ScreenWrapper scrollType='scroll' statusBarColor={AppCollors.primary}>
             <FrontView text={"گالری"} />
             <View style={styles.container}>
                 {path.map((item, index) => {
