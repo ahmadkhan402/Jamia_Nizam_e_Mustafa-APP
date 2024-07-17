@@ -8,6 +8,7 @@ import HomeScreen from '../screen/home';
 import PurposeScreen from '../screen/GenaricScreen';
 import GenaricScreen from '../screen/GenaricScreen';
 import AddmissionScreen from '../screen/admisstion';
+import Success from '../screen/successScreen.js';
 
 const Stack = createNativeStackNavigator();
 
@@ -24,6 +25,7 @@ export default function Routes() {
                     />
                 ))}
                 <Stack.Screen name={ScreenNames.ADDMISSION} component={AddmissionScreen} />
+                <Stack.Screen name={ScreenNames.SUCCESSSCREEN} component={Success} />
             </Stack.Navigator>
         </NavigationContainer>
     );

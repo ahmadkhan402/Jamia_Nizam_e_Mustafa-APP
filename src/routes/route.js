@@ -14,6 +14,7 @@ const ScreenNames = {
     BLOG: 'بلاگ',
     CONTACT_US: 'رابطہ کریں',
     ADDMISSION: 'Addmision',
+    SUCCESSSCREEN: 'SuccessScreen',
 };
 
 const screenMapping = {

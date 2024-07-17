@@ -1,10 +1,10 @@
 import { Picker } from '@react-native-picker/picker';
 import React, { useEffect, useState } from 'react';
-import { View, Text, TextInput, Button, ScrollView, StyleSheet, TouchableOpacity, Image } from 'react-native';
+import { View, Text, TextInput, ScrollView, StyleSheet, TouchableOpacity, Image, Alert } from 'react-native';
 import { Height, Width } from '../../utils/Dimentions';
 import { ScreenWrapper } from 'react-native-screen-wrapper';
 import FrontView from '../../component/frontView';
-import { useRoute } from '@react-navigation/native';
+import { useNavigation, useRoute } from '@react-navigation/native';
 import * as ImagePicker from 'expo-image-picker';
 import AppCollors from '../../utils/AppCollors';
 import { addmissionData } from '../../api';
@@ -12,9 +12,12 @@ import { getCountryData, getCountryDataList } from 'countries-list';
 import * as FileSystem from 'expo-file-system';
 import RadioButtonRN from 'radio-buttons-react-native';
 import Checkbox from 'expo-checkbox';
+import Button from '../../component/Button';
+import ScreenNames from '../../routes/route';
 
 export default function AddmissionScreen() {
     const route = useRoute();
+    const navigation = useNavigation()
     const departmentText = route.params.value
 
     const [countryList, setCountryList] = useState([]);
@@ -31,10 +34,8 @@ export default function AddmissionScreen() {
         picture: null,
         province: "",
         city: "",
-        address: '',
-        class: '',
         course: '',
-        fee: "",
+        fee: "500",
         formaleducation: "",
         address: '',
         islamiceducation: '',
@@ -50,6 +51,7 @@ export default function AddmissionScreen() {
 
     const handleCountrySelect = (country) => {
         setSelectedCountry(country);
+        handleInputChange('country', country);
         setDropdownVisible(false);
     };
     const handleInputChange = (field, value) => {
@@ -57,13 +59,26 @@ export default function AddmissionScreen() {
     };
 
     const handleSubmit = async () => {
-        console.log("form", form);
-        const res = await addmissionData(form);
-        console.log('====================================');
-        console.log(res);
-        console.log('====================================');
-    };
+        try {
+            if (form.address && form.name && form.father && form.dob && form.email && form.mobile && form.country && form.course && form.fee && form.province && form.city) {
+                if (form.gender === 'Male' && !form.picture) {
+                    Alert.alert('Error', 'Please upload an image for boys.');
+                    return;
+                }
+                // Make API request with form data
+                const res = await addmissionData(form); // Ensure addmissionData function is defined and works correctly
+                console.log('====================================');
+                console.log(res);
+                console.log('====================================');
+                if (res) navigation.navigate(ScreenNames.SUCCESSSCREEN, { data: res.message })
+            } else {
+                alert("Please fill all the required fields");
+            }
 
+        } catch (e) {
+            console.log(e);
+        }
+    };
 
     const pickImage = async () => {
         let result = await ImagePicker.requestMediaLibraryPermissionsAsync();
@@ -146,6 +161,7 @@ export default function AddmissionScreen() {
                                 value={form.dob}
                                 onChangeText={(value) => handleInputChange('dob', value)}
                                 placeholder="YYYY-MM-DD"
+                                keyboardType='numeric'
                             />
                         </View>
                         <View style={styles.formGroup}>
@@ -191,7 +207,6 @@ export default function AddmissionScreen() {
                             {dropdownVisible && (
                                 <View style={styles.dropdownList}>
                                     {countryList.map((item, index) => (
-
                                         <TouchableOpacity key={index} onPress={() => handleCountrySelect(item)} style={styles.dropdownItem}>
                                             <Text style={styles.dropdownItemText}>{item}</Text>
                                         </TouchableOpacity>
@@ -245,13 +260,12 @@ export default function AddmissionScreen() {
                         </View>
                         <View style={styles.formGroup}>
                             <Text style={styles.label}>Registration Fee (داخلہ فیس) <Text style={styles.required}>*</Text></Text>
-                            <TextInput
-                                style={styles.input}
-                                value={form.fee}
-                                onChangeText={(value) => handleInputChange('fee', value)}
-                                placeholder="Rs.500"
-                                keyboardType="default"
-                            />
+                            <Picker selectedValue={form.fee} style={styles.input} onValueChange={(itemValue) => handleInputChange('fee', itemValue)}>
+                                <Picker.Item label='Rs. 500' value='500' />
+                                <Picker.Item label='Rs. 1000' value='1000' />
+                            </Picker>
+
+
                         </View>
                         <View style={styles.formGroup}>
                             <Text style={styles.label}>Islamic Education & Institute Name (دینی تعلیم ، ادارہ کا نام) <Text style={styles.required}>*</Text></Text>
@@ -283,6 +297,7 @@ export default function AddmissionScreen() {
                                 keyboardType="default"
                             />
                         </View>
+                        <Text style={[styles.label, { paddingBottom: Height(3) }]}>Upload Picture - (Male Students Only) تصویر اپلوڈ کریں (صرف طلباء کیلئے ضروری ہے) <Text style={styles.required}>*</Text></Text>
                         <TouchableOpacity onPress={pickImage} style={styles.imagePicker}>
                             {image ? (
                                 <Image source={{ uri: image }} style={styles.image} />
@@ -301,7 +316,8 @@ export default function AddmissionScreen() {
                             />
                             <Text style={styles.paragraph}>Yes, I agree</Text>
                         </View>
-                        <Button title="Submit" onPress={handleSubmit} />
+                        <Button label="Submit" press={handleSubmit} style={styles.button} />
+
                     </View>
                 </View>
             </View>
@@ -394,14 +410,17 @@ const styles = StyleSheet.create({
         borderRadius: 5,
     },
     dropdownItem: {
+
         padding: 10,
         borderTopColor: 'black',
         borderTopWidth: 1,
+        backgroundColor: AppCollors.light
     },
     dropdownItemText: {
         fontSize: 16,
     },
     text: {
+
         fontSize: 14,
         textAlign: 'justify',
         marginBottom: 10,
@@ -414,4 +433,7 @@ const styles = StyleSheet.create({
     checkbox: {
         margin: 8,
     },
+    button: {
+        height: Height(6),
+    }
 });
