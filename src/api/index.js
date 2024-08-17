@@ -50,13 +50,28 @@ const addQuestionData = async (data) => {
         throw error; // Optional: rethrow the error if you want to handle it elsewhere
     }
 }
-const getQuestionData = async () => {
+const getQuestionList = async (data) => {
     try {
-        const response = await axios.get("https://nizamemustafa.com/GetQuestionAnswares_api.php")
+
+        const response = await axios.post('https://nizamemustafa.com/GetQuestionAnswares_api.php', data, {
+            headers: {
+                'Content-Type': 'application/json',
+            },
+        });
+        return response.data;
+    } catch (error) {
+        console.error('Error fetching Library data:', error);
+        throw error;
+    }
+};
+const getAllQuestions = async () => {
+    try {
+        const response = await axios.get("https://nizamemustafa.com/get_latest_questions.php")
+
         return response.data
     } catch (error) {
         console.error("Error fetching Library data:", error);
         throw error; // Optional: rethrow the error if you want to handle it elsewhere
     }
 }
-export { getYoutubeLink, addmissionData, getLibraryData, getResultData, addQuestionData, getQuestionData }
+export { getYoutubeLink, addmissionData, getLibraryData, getResultData, addQuestionData, getQuestionList, getAllQuestions }

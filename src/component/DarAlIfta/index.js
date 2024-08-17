@@ -1,11 +1,17 @@
-import React, { useState } from 'react';
-import { View, StyleSheet } from 'react-native';
+import React, { useEffect, useState } from 'react';
+import { View, StyleSheet, Text, Platform } from 'react-native';
 import { ScreenWrapper } from 'react-native-screen-wrapper';
 import AppCollors from '../../utils/AppCollors';
 import { Picker } from '@react-native-picker/picker';
+import FrontView from '../frontView';
+import { Height, Width } from '../../utils/Dimentions';
+import { getAllQuestions, getQuestionList } from '../../api';
 
 export default function DarAlIftaScreen() {
+    // Single state to manage the selected value of the Picker
     const [selectedQuestionTitle, setSelectedQuestionTitle] = useState("");
+    const [questionList, setQuestionList] = useState([]);
+    const [allQuestion, setAllQuestion] = useState([]);
 
     const pickerOptions = [
         { label: "سوال کا عنوان منتخب کریں۔", value: "" },
@@ -60,37 +66,87 @@ export default function DarAlIftaScreen() {
         { label: "تحقیق و تخریج حدیث", value: "Tafseer Quran" },
     ];
 
+    const getAllQuestionData = async () => {
+
+        try {
+            const response = await getAllQuestions();
+            if (response && response?.status === "success") {
+                // console.log("res", response);
+                setAllQuestion(response?.data);
+            }
+        } catch (error) {
+        }
+    }
+    const getApiRequest = async () => {
+        try {
+            let data = {
+                "category": selectedQuestionTitle
+            }
+            const response = await getQuestionList(data);
+            console.log("response", response);
+
+            if (response && response?.success === true) {
+                setQuestionList(response?.QuestionAnswares);
+            }
+        } catch (error) {
+        }
+    }
+    useEffect(() => {
+        getAllQuestionData()
+    }, [])
+    useEffect(() => {
+        getApiRequest()
+    }, [selectedQuestionTitle])
     return (
         <ScreenWrapper scrollType="scroll" statusBarColor={AppCollors.primary}>
             <View style={styles.container}>
-                <Picker
-                    selectedValue={selectedQuestionTitle}
-                    onValueChange={(itemValue) => setSelectedQuestionTitle(itemValue)}
-                    style={styles.picker}
-                >
-                    {pickerOptions.map((option, index) => (
-                        <Picker.Item key={index} label={option.label} value={option.value} />
-                    ))}
-                </Picker>
-                {/* You can display the selected value below, if needed */}
-                <Text style={styles.selectedValueText}>
-                    {selectedQuestionTitle ? `منتخب شدہ عنوان: ${selectedQuestionTitle}` : "براہ کرم ایک عنوان منتخب کریں"}
-                </Text>
+                <FrontView text={"آن لائن فتویٰ"} />
+                <Text style={styles.titleText}>آن لائن فتوی (سوالات اور جوابات حاصل کرنے کے لیے سوال کے عنوان پر کلک کریں)</Text>
+                <View style={styles.itemContainer}>
+                    <Picker
+                        selectedValue={selectedQuestionTitle}
+                        onValueChange={(itemValue) => setSelectedQuestionTitle(itemValue)}
+                        style={styles.picker}
+                    >
+                        {pickerOptions.map((option, index) => (
+                            <Picker.Item key={index} label={option.label} value={option.value} />
+                        ))}
+                    </Picker>
+                </View>
+                <View style={styles.questionView}>
+
+
+                    <Text style={styles.bggreen}>سوالات اور جوابات</Text>
+                    {questionList?.length !== 0 ? (
+                        <View style={styles.questionItemContainer}>
+
+                            {questionList?.map((item, index) => (
+                                <View style={styles.questionItem} key={index}>
+                                    <Text style={styles.questionTitle} numberOfLines={2}>{item.name} {(item.date).substring(0, 10)}</Text>
+                                    <Text style={styles.questionText}><Text style={{ fontWeight: 'bold' }}>Question:</Text> {item?.question}</Text>
+                                    <Text style={styles.answerText}><Text style={{ fontWeight: 'bold' }}>Answer:</Text> {item?.answare}</Text>
+                                </View>
+                            ))}
+                        </View>
+                    ) : (
+                        <Text style={styles.noQuestion}>No Questions</Text>
+                    )}
+                </View>
             </View>
         </ScreenWrapper>
     );
 }
 
 const styles = StyleSheet.create({
+
     container: {
         flex: 1,
         justifyContent: 'center',
         alignItems: 'center',
-        backgroundColor: AppCollors.light,
     },
     picker: {
-        height: 50,
-        width: '90%',
+        height: Height(7),
+        width: Width(90),
         backgroundColor: AppCollors.light,
     },
     selectedValueText: {
@@ -98,5 +154,76 @@ const styles = StyleSheet.create({
         fontSize: 18,
         color: AppCollors.dark,
     },
+    itemContainer: {
+        marginTop: Height(1),
+        width: Width(90),
+        alignSelf: 'center',
+    }
+    ,
+    questionView: {
+        justifyContent: 'center',
+        marginTop: Height(3),
+        width: Width(90),
+        alignSelf: 'center',
+    },
+    questionText: {
+        marginVertical: Height(1),
+        fontSize: 16,
+        color: AppCollors.dark,
+    },
+    titleText: {
+        marginVertical: Height(2),
+        textAlign: 'center',
+        fontSize: 18,
+        fontWeight: 'bold',
+        color: AppCollors.dark,
+    },
+    bggreen: {
+        backgroundColor: AppCollors.primary,
+        color: 'white',
+        textAlign: 'center',
+        padding: 10,
+        borderRadius: 5,
+        fontSize: 18,
+    },
+    questionTitle: {
+        borderRadius: 10,
+        width: Width(75),
+        alignSelf: "center",
+        backgroundColor: AppCollors.primary,
+        color: 'white',
+        textAlign: 'left',
+        padding: 10,
+        fontSize: 14,
+    },
+    questionItemContainer: {
+        marginTop: Height(2),
+        width: Width(90),
+        alignSelf: 'center',
+        borderWidth: 1,
+        borderRadius: 5,
+        padding: Height(2),
+        marginBottom: Height(2),
+    },
+    questionItem: {
+        width: Width(85),
+        // alignItems:"center",
+        // height: Height(20),
+        padding: Height(2),
+        alignSelf: 'center',
+        marginVertical: Height(1),
+        // borderWidth: 1,
+        borderRadius: 2,
+        ...Platform.select({
+            ios: {
+                shadowColor: '#000',
+                shadowOffset: { width: 0, height: 1 },
+                shadowOpacity: 0.8,
+                shadowRadius: 2,
+            },
+            android: {
+                elevation: 2
+            }
+        })
+    }
 });
-
