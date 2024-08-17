@@ -50,4 +50,13 @@ const addQuestionData = async (data) => {
         throw error; // Optional: rethrow the error if you want to handle it elsewhere
     }
 }
-export { getYoutubeLink, addmissionData, getLibraryData, getResultData, addQuestionData }
+const getQuestionData = async () => {
+    try {
+        const response = await axios.get("https://nizamemustafa.com/GetQuestionAnswares_api.php")
+        return response.data
+    } catch (error) {
+        console.error("Error fetching Library data:", error);
+        throw error; // Optional: rethrow the error if you want to handle it elsewhere
+    }
+}
+export { getYoutubeLink, addmissionData, getLibraryData, getResultData, addQuestionData, getQuestionData }

@@ -43,6 +43,7 @@ export default function AskQuestionScreen() {
         // { label: "Your Question? (آپ کا سوال)", placeholderText: "Your Question", key: 'yourQuestion' },
     ];
     const pickerOptions = [
+        { label: "سوال کا عنوان منتخب کریں۔", value: "" },
         { label: "ایمان و کفر", value: "Belief and Disbelief" },
         { label: "قیامت و آخرت", value: "Judgment and Hereafter" },
         { label: "طہارت", value: "Purity" },
@@ -105,6 +106,7 @@ export default function AskQuestionScreen() {
 
                 if (res && res?.success === true) {
                     setData(res)
+                    setForm({ question: '', questiontitle: '', email: '', address: '', name: '', contact: '' })
                     setModalVisible(true);
                     // FlashMessage({ message: "Question added successfully", success: true });
                 }
