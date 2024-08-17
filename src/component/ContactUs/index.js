@@ -10,7 +10,7 @@ export default function ContactUsScreen() {
         <ScreenWrapper scrollType='scroll'>
             <FrontView text={"Contact Us"} />
             <View style={styles.container}>
-                <Text style={[styles.text, { fontWeight: "light" }]}>Cell: (+92) 334 8688053</Text>
+                <Text style={[styles.text, { fontWeight: "light" }]}>Cell: (+92) 307 5674646</Text>
                 <Text style={[styles.text, { fontWeight: "medium", fontSize: 18 }]}>Email: info@nizamemustafa.com</Text>
                 <Text style={[styles.text, { marginTop: Height(2) }]}>ایڈریس : جامعہ نظام مصطفی ﷺ ٹھٹھی شریف ڈاکخانہ داؤدخیل تحصیل وضلع میانوالی پنجاب پاکستان</Text>
             </View>

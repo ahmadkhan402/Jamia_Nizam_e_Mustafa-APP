@@ -5,7 +5,6 @@ import AppCollors from "../../utils/AppCollors";
 const styles = StyleSheet.create({
     container: {
         width: Width(100),
-        height: Height(40),
         flexDirection: "row",
         flexWrap: "wrap",
         justifyContent: 'center',
@@ -14,7 +13,6 @@ const styles = StyleSheet.create({
 
     },
     imageContainer: {
-
         margin: Width(1),
         // backgroundColor: AppCollors.bgLight,
 

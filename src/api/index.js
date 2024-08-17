@@ -74,4 +74,13 @@ const getAllQuestions = async () => {
         throw error; // Optional: rethrow the error if you want to handle it elsewhere
     }
 }
-export { getYoutubeLink, addmissionData, getLibraryData, getResultData, addQuestionData, getQuestionList, getAllQuestions }
+const getPastStudents = async () => {
+    try {
+        const response = await axios.get("https://nizamemustafa.com/GetPastStudents.php")
+        return response.data
+    } catch (error) {
+        console.error("Error fetching Library data:", error);
+        throw error; // Optional: rethrow the error if you want to handle it elsewhere
+    }
+}
+export { getYoutubeLink, getPastStudents, addmissionData, getLibraryData, getResultData, addQuestionData, getQuestionList, getAllQuestions }

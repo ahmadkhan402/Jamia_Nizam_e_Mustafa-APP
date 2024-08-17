@@ -1,4 +1,5 @@
 const ScreenNames = {
+
     HOME: 'سرورق',
     PURPOSE: 'اغراض ومقاصد',
     DEPARTMENTS: 'شعبہ جات',
@@ -15,7 +16,8 @@ const ScreenNames = {
     CONTACT_US: 'رابطہ کریں',
     ADDMISSION: 'Addmision',
     SUCCESSSCREEN: 'SuccessScreen',
-    ASKQUESTION: "سوالات پوچھیے"
+    ASKQUESTION: "سوالات پوچھیے",
+    PASTSTUDENT: "سابقه طلباء"
 };
 
 const screenMapping = {
@@ -33,7 +35,8 @@ const screenMapping = {
     'دارالافتاء': 'DarAlIftaScreen',
     // 'بلاگ': 'BlogScreen',
     'رابطہ کریں': 'ContactUsScreen',
-    'سوالات پوچھیے': 'AskQuestionScreen'
+    'سوالات پوچھیے': 'AskQuestionScreen',
+    'سابقه طلباء': 'PastStudentsScreen'
 };
 
 

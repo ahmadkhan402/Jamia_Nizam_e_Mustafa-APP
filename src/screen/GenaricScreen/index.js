@@ -4,7 +4,7 @@ import { View, Text, StyleSheet } from 'react-native';
 import Header from '../../component/header';
 import Purpose from '../../component/purpose';
 import AppCollors from '../../utils/AppCollors';
-import DepartmentsScreen from '../../component/department';
+import DepartmentsScreen from '../../component/pastStudents';
 import ScreenNames from '../../routes/route';
 import OnlineCoursesScreen from '../../component/courses';
 import LecturesScreen from '../../component/lectures';
@@ -18,6 +18,7 @@ import DarAlIftaScreen from '../../component/DarAlIfta';
 import ContactUsScreen from '../../component/ContactUs';
 import { ScreenWrapper } from 'react-native-screen-wrapper';
 import AskQuestionScreen from '../../component/askQuestion';
+import PastStudents from '../../component/pastStudents';
 
 export default function GenaricScreen() {
     const route = useRoute()
@@ -34,10 +35,11 @@ export default function GenaricScreen() {
             <Header />
             <View style={styles.container}>
                 {/* {item === "اغراض ومقاصد" && <Purpose />} */}
-                {/* {item === 'شعبہ جات' && <DepartmentsScreen />} */}
+
                 {item === 'آن لائن کورسز' && <OnlineCoursesScreen />}
                 {item === 'لیکچرز' && <LecturesScreen />}
                 {item === 'نصاب' && <SyllabusScreen />}
+                {item === 'سابقه طلباء' && <PastStudents />}
                 {item === 'نتائج' && <ResultsScreen />}
                 {item === 'الحاق' && <AffiliationScreen />}
                 {item === 'لائبریری' && <LibraryScreen />}

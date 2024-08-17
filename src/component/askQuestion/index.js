@@ -30,8 +30,8 @@ export default function AskQuestionScreen() {
         'کال یا میسج کرنے پر جواب نہیں دیا جائے گا۔',
         'جواب اپ کے دیے گئے ای میل ایڈریس پر ارسال کیا جائے گا اس لیے درست ای میل کا اندراج کریں۔',
         'مکرر(دوبارہ) سوال کا جواب نہیں دیا جائے گا۔',
-        'سوال مختصر اور جامع کرنے کی کوشش کریں۔.',
-        'واہیات اور فحش نوعیت کے سوالات سے اجتناب کریں سوال میں بہتر الفاظ کا چناؤ کریں',
+        'سوال مختصر اور جامع کرنے کی کوشش کریں۔',
+        'واہیات اور فحش نوعیت کے سوالات سے اجتناب کریں سوال میں بہتر الفاظ کا چناؤ کریں۔',
         'فریقین کے متعلقہ یا کاروباری ازدواجی اور مالی تنازع پر مشتمل سوالات کا جواب ایک فریق کی بات پر نہیں دیا جائے گا۔'
     ];
 
@@ -136,7 +136,7 @@ export default function AskQuestionScreen() {
                         </View>
                     ))}
                     <View style={styles.contactcontainer}>
-                        <Text style={[styles.contText, { fontWeight: "light" }]}>Cell: (+92) 334 8688053</Text>
+                        <Text style={[styles.contText, { fontWeight: "light" }]}>Cell: (+92) 307 5674646</Text>
                         <Text style={[styles.contText, { fontWeight: "medium", fontSize: 18 }]}>Email: info@nizamemustafa.com</Text>
                         <Text style={[styles.contText, { marginTop: Height(2) }]}>ایڈریس : جامعہ نظام مصطفی ﷺ ٹھٹھی شریف ڈاکخانہ داؤدخیل تحصیل وضلع میانوالی پنجاب پاکستان</Text>
                     </View>
@@ -268,11 +268,11 @@ const styles = StyleSheet.create({
         // color: AppCollors.white
     },
     inputViewContaienr: {
-        width: Width(98),
+        width: Width(95),
         // backgroundColor: AppCollors.red,
         borderRadius: 10,
         borderWidth: 1,
-        elevation: 5,
+        // elevation: 1,
         alignItems: 'center',
         alignSelf: 'center',
         // marginBottom: Height(1)
