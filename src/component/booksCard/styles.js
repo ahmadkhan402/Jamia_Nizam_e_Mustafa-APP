@@ -13,12 +13,14 @@ const styles = StyleSheet.create({
 
     },
     bookName: {
-        fontSize: 25,
+        padding: Width(1),
+        fontSize: 18,
         fontWeight: "bold",
         color: 'white'
     },
     bookNameContainer: {
-        width: Width(46),
+        marginBottom: Height(2),
+        width: Width(38),
         height: Height(7),
         justifyContent: 'center',
         alignItems: 'center',
@@ -26,7 +28,7 @@ const styles = StyleSheet.create({
     },
     bookImgContainer: {
         marginVertical: Height(0.4),
-        width: Width(33),
+        width: Width(38),
         height: Height(23),
         justifyContent: 'center',
         alignItems: 'center',
@@ -34,14 +36,14 @@ const styles = StyleSheet.create({
         borderColor: AppCollors.medium
     },
     bookImg: {
-        width: Width(29),
+        width: Width(32),
         height: Height(21),
         resizeMode: 'cover'
 
     },
     downloadBtn: {
         backgroundColor: AppCollors.primary,
-        width: Width(20),
+        width: Width(22),
         height: Height(5),
         justifyContent: 'center',
         alignItems: 'center',

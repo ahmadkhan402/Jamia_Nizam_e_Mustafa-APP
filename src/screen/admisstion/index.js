@@ -10,10 +10,12 @@ import AppCollors from '../../utils/AppCollors';
 import { addmissionData } from '../../api';
 import { getCountryData, getCountryDataList } from 'countries-list';
 import * as FileSystem from 'expo-file-system';
-import RadioButtonRN from 'radio-buttons-react-native';
 import Checkbox from 'expo-checkbox';
 import Button from '../../component/Button';
 import ScreenNames from '../../routes/route';
+import { FlashMessage } from '../../component/flashMessage';
+import DateTimePickerModal from 'react-native-modal-datetime-picker';
+import CustomModal from '../../component/customModal';
 
 export default function AddmissionScreen() {
     const route = useRoute();
@@ -34,7 +36,7 @@ export default function AddmissionScreen() {
         picture: null,
         province: "",
         city: "",
-        course: '',
+        class: '',
         fee: "500",
         formaleducation: "",
         address: '',
@@ -44,6 +46,9 @@ export default function AddmissionScreen() {
     const [selectedCountry, setSelectedCountry] = useState('Select Country');
     const [dropdownVisible, setDropdownVisible] = useState(false);
     const [isChecked, setChecked] = useState(false);
+    const [isDatePickerVisible, setDatePickerVisibility] = useState(false);
+    const [modalVisible, setModalVisible] = useState(false);
+    const [apiResponseMessage, setApiResponseMessage] = useState({});
 
     const toggleDropdown = () => {
         setDropdownVisible(!dropdownVisible);
@@ -58,9 +63,58 @@ export default function AddmissionScreen() {
         setForm({ ...form, [field]: value });
     };
 
+    const checkCondition = () => {
+        if (!form.address) {
+            FlashMessage({ message: "Please fill the address required fields", fail: true });
+            return false;
+        } else if (!form.name) {
+            FlashMessage({ message: "Please fill the Full Name required fields", fail: true });
+            return false;
+        } else if (!form.father) {
+            FlashMessage({ message: "Please fill the Father Name required fields", fail: true });
+            return false;
+        } else if (!form.dob) {
+            FlashMessage({ message: "Please fill the Date of Birth required fields", fail: true });
+            return false;
+        } else if (!form.email) {
+            FlashMessage({ message: "Please fill the Email required fields", fail: true });
+            return false;
+        } else if (!form.mobile) {
+            FlashMessage({ message: "Please fill the Mobile Number required fields", fail: true });
+            return false;
+        } else if (!form.country) {
+            FlashMessage({ message: "Please fill the Country required fields", fail: true });
+            return false;
+        } else if (!form.class) {
+            FlashMessage({ message: "Please fill the class required fields", fail: true });
+            return false;
+        } else if (!form.fee) {
+            FlashMessage({ message: "Please fill the Fee required fields", fail: true });
+            return false;
+        } else if (!form.province) {
+            FlashMessage({ message: "Please fill the Province required fields", fail: true });
+            return false;
+        } else if (!form.city) {
+            FlashMessage({ message: "Please fill the City required fields", fail: true });
+            return false;
+        } else if (!form.islamiceducation) {
+            FlashMessage({ message: "Please fill the Islamic Education required fields", fail: true });
+            return false;
+        } else if (!form.formaleducation) {
+            FlashMessage({ message: "Please fill the Formal Education required fields", fail: true });
+            return false;
+        } else if (!form.others) {
+            FlashMessage({ message: "Please fill the Other Details required fields", fail: true });
+            return false;
+        }
+        return true;
+    };
     const handleSubmit = async () => {
         try {
-            if (form.address && form.name && form.father && form.dob && form.email && form.mobile && form.country && form.course && form.fee && form.province && form.city) {
+            const isValid = checkCondition();
+            if (!isValid) return;
+            if (form.address && form.name && form.father && form.dob && form.email && form.mobile && form.country && form.class && form.fee && form.province && form.city) {
+
                 if (form.gender === 'Male' && !form.picture) {
                     Alert.alert('Error', 'Please upload an image for boys.');
                     return;
@@ -70,11 +124,12 @@ export default function AddmissionScreen() {
                 console.log('====================================');
                 console.log(res);
                 console.log('====================================');
-                if (res) navigation.navigate(ScreenNames.SUCCESSSCREEN, { data: res.message })
-            } else {
-                alert("Please fill all the required fields");
+                if (res) {
+                    setModalVisible(true)
+                    setApiResponseMessage(res)
+                    // navigation.navigate(ScreenNames.SUCCESSSCREEN, { data: res.message });
+                }
             }
-
         } catch (e) {
             console.log(e);
         }
@@ -119,6 +174,21 @@ export default function AddmissionScreen() {
         },
 
     ];
+
+    const showDatePicker = () => {
+        setDatePickerVisibility(true);
+    };
+
+    const hideDatePicker = () => {
+        setDatePickerVisibility(false);
+    };
+
+    const handleConfirm = (date) => {
+        const formattedDate = `${("0" + date.getDate()).slice(-2)}/${("0" + (date.getMonth() + 1)).slice(-2)}/${date.getFullYear()}`;
+        handleInputChange('dob', formattedDate);
+        hideDatePicker();
+    };
+
     useEffect(() => {
         const res = getCountryDataList()
         const countrylist = res.map((item) => {
@@ -156,12 +226,21 @@ export default function AddmissionScreen() {
                         </View>
                         <View style={styles.formGroup}>
                             <Text style={styles.label}>Date of Birth (تاریخ پیدائش) <Text style={styles.required}>*</Text></Text>
-                            <TextInput
-                                style={styles.input}
-                                value={form.dob}
-                                onChangeText={(value) => handleInputChange('dob', value)}
-                                placeholder="YYYY-MM-DD"
-                                keyboardType='numeric'
+                            <TouchableOpacity onPress={showDatePicker}>
+                                <TextInput
+
+                                    style={styles.input}
+                                    value={form.dob}
+                                    placeholder="DD/MM/YYYY"
+                                    editable={false}
+                                />
+                            </TouchableOpacity>
+                            <DateTimePickerModal
+                                date={new Date()}
+                                isVisible={isDatePickerVisible}
+                                mode="date"
+                                onConfirm={handleConfirm}
+                                onCancel={hideDatePicker}
                             />
                         </View>
                         <View style={styles.formGroup}>
@@ -247,13 +326,20 @@ export default function AddmissionScreen() {
                         </View>
 
                         <View style={styles.formGroup}>
-                            <Text style={styles.label}>Course Name (کورس کا انتخاب) <Text style={styles.required}>*</Text></Text>
+                            <Text style={styles.label}>Class Name (درجہ کا انتخاب کریں) <Text style={styles.required}>*</Text></Text>
                             <Picker
-                                selectedValue={form.course}
+                                selectedValue={form.class}
                                 style={styles.input}
-                                onValueChange={(itemValue) => handleInputChange('course', itemValue)}
+                                onValueChange={(itemValue) => handleInputChange('class', itemValue)}
                             >
-                                <Picker.Item label="شعبہ ناظرۃ و تجوید" value="شعبہ ناظرۃ و تجوید" />
+                                <Picker.Item label="عامہ ۔ سال اول" value="ٓAama - 1st Year" />
+                                <Picker.Item label="عامہ ۔سال دوم" value="Aama - 2nd Year" />
+                                <Picker.Item label="خاصہ۔سال اول" value="Khasa - 1st Year" />
+                                <Picker.Item label="خاصہ۔سال دوم" value="Khasa - 2nd Year" />
+                                <Picker.Item label="عالیہ۔ سال اول" value="Aalia - 1st Year" />
+                                <Picker.Item label="عالیہ۔سال دوم" value="Aalia - 2nd Year" />
+                                <Picker.Item label="عالمیہ۔سال اول" value="Aalmia - 1st Year" />
+                                <Picker.Item label="عالمیہ ۔ سال دوم" value="Aalmia - 2nd Year" />
 
                                 {/* Add more countries as needed */}
                             </Picker>
@@ -320,7 +406,9 @@ export default function AddmissionScreen() {
 
                     </View>
                 </View>
+                <CustomModal Visible={modalVisible} title={apiResponseMessage.success ? 'Success' : 'Error'} message={apiResponseMessage.message} onPress={() => setModalVisible(false)} />
             </View>
+
         </ScreenWrapper>
     );
 }

@@ -19,5 +19,22 @@ const addmissionData = async (data) => {
         throw error; // Optional: rethrow the error if you want to handle it elsewhere
     }
 }
+const getLibraryData = async () => {
+    try {
+        const response = await axios.get("https://nizamemustafa.com/GetLibraryBooks.php")
+        return response.data
+    } catch (error) {
+        console.error("Error fetching Library data:", error);
+        throw error; // Optional: rethrow the error if you want to handle it elsewhere
+    }
+}
+const getResultData = async (rollNumber) => {
+    try {
+        const response = await axios.get(`https://nizamemustafa.com/GetStudentResults_Api.php?rollno=${rollNumber}`)
 
-export { getYoutubeLink, addmissionData }
+        return response.message
+    } catch (error) {
+        return error.response.data
+    }
+}
+export { getYoutubeLink, addmissionData, getLibraryData, getResultData }

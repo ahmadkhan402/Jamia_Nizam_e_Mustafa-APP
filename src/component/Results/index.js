@@ -4,6 +4,8 @@ import { View, Text, TextInput, StyleSheet, ScrollView, TouchableOpacity } from 
 import AppCollors from '../../utils/AppCollors';
 import { Width } from '../../utils/Dimentions';
 import Button from '../Button';
+import { getResultData } from '../../api';
+import { FlashMessage } from '../flashMessage';
 
 export default function ResultsScreen() {
     const [form, setForm] = useState({
@@ -17,9 +19,27 @@ export default function ResultsScreen() {
         setForm({ ...form, [field]: value });
     };
 
-    const handleSubmit = () => {
+    const handleSubmit = async () => {
+        try {
+            if (form.rollNumber) {
+                const res = await getResultData(form.rollNumber)
+
+                if (res && res?.success) {
+                    console.log('====================================');
+                    console.log(res);
+                    console.log('====================================');
+                } else {
+                    FlashMessage({ message: 'Please Enter Valid Roll Number', fail: true })
+
+                }
+            } else {
+                FlashMessage({ message: 'Please Enter Roll Number', fail: true })
+            }
+        } catch (error) {
+
+        }
         // Handle form submission
-        console.log(form);
+        // console.log(form);
     };
 
     return (
