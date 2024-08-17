@@ -43,7 +43,7 @@ const styles = StyleSheet.create({
     },
     downloadBtn: {
         backgroundColor: AppCollors.primary,
-        width: Width(22),
+        width: Width(25),
         height: Height(5),
         justifyContent: 'center',
         alignItems: 'center',

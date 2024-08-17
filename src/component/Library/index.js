@@ -28,7 +28,7 @@ export default function LibraryScreen() {
             <FrontView text="لائبریری" />
             <View style={styles.cardDisplay}>
                 {data.map((item, index) => (
-                    <BooksCardComponents bookImg={{ uri: `https://nizamemustafa.com/images/Books/${item.bookcover}` }} key={index} bookName={item.bookname} onpress={() => Linking.openURL(`https://nizamemustafa.com/images/Books/${item.book}`)} downloadBtn={"دانلود"} />
+                    <BooksCardComponents bookImg={{ uri: `https://nizamemustafa.com/images/Books/${item.bookcover}` }} key={index} bookName={item.bookname} onpress={() => Linking.openURL(`https://nizamemustafa.com/images/Books/${item.book}`)} downloadBtn={"ڈاؤن لوڈ"} />
                 ))}
             </View>
         </ScreenWrapper>

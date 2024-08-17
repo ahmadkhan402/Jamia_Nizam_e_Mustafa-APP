@@ -81,8 +81,17 @@ export default function ResultsScreen() {
                                     onValueChange={(itemValue) => handleInputChange('year', itemValue)}
                                     style={styles.picker}
                                 >
+                                    <Picker.Item label="2015ء" value="2015" />
+                                    <Picker.Item label="2016ء" value="2016" />
+                                    <Picker.Item label="2017ء" value="2017" />
+                                    <Picker.Item label="2018ء" value="2018" />
+                                    <Picker.Item label="2019ء" value="2019" />
+                                    <Picker.Item label="2020ء" value="2020" />
                                     <Picker.Item label="2021ء" value="2021" />
                                     <Picker.Item label="2022ء" value="2022" />
+                                    <Picker.Item label="2023ء" value="2023" />
+                                    <Picker.Item label="2024ء" value="2024" />
+                                    <Picker.Item label="2025ء" value="2025" />
                                 </Picker>
                             </View>
                             <View style={styles.formGroup}>
@@ -102,12 +111,12 @@ export default function ResultsScreen() {
                                 </Picker>
                             </View>
                             <View style={styles.formGroup}>
-                                <Text style={styles.label}>رول نمبر:</Text>
+                                <Text style={styles.label}>رجسٹریشن نمبر :</Text>
                                 <TextInput
                                     style={styles.input}
                                     value={form.rollNumber}
                                     onChangeText={(value) => handleInputChange('rollNumber', value)}
-                                    placeholder="Roll Number"
+                                    placeholder="رجسٹریشن نمبر"
                                     keyboardType="numeric"
                                 />
                             </View>
@@ -117,12 +126,7 @@ export default function ResultsScreen() {
                                 <View style={styles.resultContainer}>
                                     <Text style={styles.rollNumberText}>Roll Number: {form.rollNumber}</Text>
                                     <Button textStyle={styles.downloadButtonText} style={styles.downloadButton} label={"Download Result"} press={() => Linking.openURL(`https://nizamemustafa.com/images/Results/${resultData}`)} />
-                                    {/* <TouchableOpacity
-                                        style={styles.downloadButton}
-                                        onPress={() => Linking.openURL(`https://nizamemustafa.com/images/Results/${resultData.image}`)}
-                                    >
-                                        <Text style={styles.downloadButtonText}>Download Result</Text>
-                                    </TouchableOpacity> */}
+
                                 </View>
                             )}
                         </View>
