@@ -110,20 +110,21 @@ export default function AddmissionScreen() {
         return true;
     };
     const handleSubmit = async () => {
+        // console.log(form);
+
         try {
             const isValid = checkCondition();
             if (!isValid) return;
             if (form.address && form.name && form.father && form.dob && form.email && form.mobile && form.country && form.class && form.fee && form.province && form.city) {
 
                 if (form.gender === 'Male' && !form.picture) {
-                    Alert.alert('Error', 'Please upload an image for boys.');
+                    Alert.alert('Error', 'Please upload an image (Males only)');
                     return;
                 }
                 // Make API request with form data
                 const res = await addmissionData(form); // Ensure addmissionData function is defined and works correctly
-                console.log('====================================');
                 console.log(res);
-                console.log('====================================');
+
                 if (res) {
                     setModalVisible(true)
                     setApiResponseMessage(res)

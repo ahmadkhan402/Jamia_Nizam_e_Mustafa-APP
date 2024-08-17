@@ -15,8 +15,9 @@ const addmissionData = async (data) => {
         const response = await axios.post("https://nizamemustafa.com/admision_api.php", data)
         return response.data
     } catch (error) {
-        console.error("Error sending Addmission data :", error);
-        throw error; // Optional: rethrow the error if you want to handle it elsewhere
+        return error.response.data
+        // console.error("Error sending Addmission data :", error.response);
+        // throw error; // Optional: rethrow the error if you want to handle it elsewhere
     }
 }
 const getLibraryData = async () => {
