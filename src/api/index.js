@@ -24,7 +24,7 @@ const getLibraryData = async () => {
         const response = await axios.get("https://nizamemustafa.com/GetLibraryBooks.php")
         return response.data
     } catch (error) {
-        console.error("Error fetching Library data:", error);
+        // console.error("Error fetching Library data:", error);
         throw error; // Optional: rethrow the error if you want to handle it elsewhere
     }
 }

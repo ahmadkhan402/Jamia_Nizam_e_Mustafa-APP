@@ -67,23 +67,26 @@ export default function DarAlIftaScreen() {
     ];
 
     const getAllQuestionData = async () => {
-
         try {
             const response = await getAllQuestions();
             if (response && response?.status === "success") {
-                // console.log("res", response);
-                setAllQuestion(response?.data);
+                console.log("res", response);
+                setQuestionList(response?.data);
+            } else {
+                setQuestionList([]);
             }
         } catch (error) {
         }
     }
     const getApiRequest = async () => {
         try {
+            if (!selectedQuestionTitle) return
+            setQuestionList([]);
             let data = {
                 "category": selectedQuestionTitle
             }
             const response = await getQuestionList(data);
-            console.log("response", response);
+            // console.log("response", response);
 
             if (response && response?.success === true) {
                 setQuestionList(response?.QuestionAnswares);
@@ -102,6 +105,7 @@ export default function DarAlIftaScreen() {
             <View style={styles.container}>
                 <FrontView text={"آن لائن فتویٰ"} />
                 <Text style={styles.titleText}>آن لائن فتوی (سوالات اور جوابات حاصل کرنے کے لیے سوال کے عنوان پر کلک کریں)</Text>
+                <Text style={[styles.bggreen, { width: Width(90) }]}>سوال کا عنوان</Text>
                 <View style={styles.itemContainer}>
                     <Picker
                         selectedValue={selectedQuestionTitle}
@@ -129,7 +133,7 @@ export default function DarAlIftaScreen() {
                             ))}
                         </View>
                     ) : (
-                        <Text style={styles.noQuestion}>No Questions</Text>
+                        <Text style={styles.noQuestion}>کوئی سوالات یا جوابات دستیاب نہیں ہیں۔</Text>
                     )}
                 </View>
             </View>
@@ -153,6 +157,19 @@ const styles = StyleSheet.create({
         marginTop: 20,
         fontSize: 18,
         color: AppCollors.dark,
+    },
+    noQuestion: {
+        borderWidth: 1,
+        borderRadius: 8,
+        marginTop: Height(3),
+        width: Width(80),
+        height: Height(8),
+        textAlignVertical: 'center',
+        alignSelf: 'center',
+        alignItems: 'center',
+        justifyContent: 'center',
+        fontSize: 16,
+        textAlign: 'center',
     },
     itemContainer: {
         marginTop: Height(1),
