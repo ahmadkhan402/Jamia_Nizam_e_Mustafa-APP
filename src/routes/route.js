@@ -11,10 +11,11 @@ const ScreenNames = {
     GALLERY: 'گیلری',
     NEWS_SECTION: 'نیوز سیکشن',
     DAR_AL_IFTA: 'دارالافتاء',
-    BLOG: 'بلاگ',
+    // BLOG: 'بلاگ',
     CONTACT_US: 'رابطہ کریں',
     ADDMISSION: 'Addmision',
     SUCCESSSCREEN: 'SuccessScreen',
+    ASKQUESTION: "سوالات پوچھیے"
 };
 
 const screenMapping = {
@@ -30,8 +31,9 @@ const screenMapping = {
     'گیلری': 'GalleryScreen',
     'نیوز سیکشن': 'NewsSectionScreen',
     'دارالافتاء': 'DarAlIftaScreen',
-    'بلاگ': 'BlogScreen',
+    // 'بلاگ': 'BlogScreen',
     'رابطہ کریں': 'ContactUsScreen',
+    'سوالات پوچھیے': 'AskQuestionScreen'
 };
 
 

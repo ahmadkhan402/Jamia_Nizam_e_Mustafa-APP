@@ -3,10 +3,10 @@ import { View, Text, TouchableOpacity, StyleSheet } from 'react-native';
 import { Height, Width } from '../../utils/Dimentions';
 import AppCollors from '../../utils/AppCollors';
 
-export default function Button({ label, press, style }) {
+export default function Button({ label, press, style, textStyle }) {
     return (
         <TouchableOpacity style={[styles.container, style]} onPress={press}>
-            <Text style={styles.text}>{label}</Text>
+            <Text style={[styles.text, textStyle]}>{label}</Text>
         </TouchableOpacity>
     );
 }

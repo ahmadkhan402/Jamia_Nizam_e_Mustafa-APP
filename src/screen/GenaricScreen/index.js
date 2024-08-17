@@ -15,9 +15,9 @@ import LibraryScreen from '../../component/Library';
 import GalleryScreen from '../../component/Gallery';
 import NewsSectionScreen from '../../component/NewsSection';
 import DarAlIftaScreen from '../../component/DarAlIfta';
-import BlogScreen from '../../component/Blog';
 import ContactUsScreen from '../../component/ContactUs';
 import { ScreenWrapper } from 'react-native-screen-wrapper';
+import AskQuestionScreen from '../../component/askQuestion';
 
 export default function GenaricScreen() {
     const route = useRoute()
@@ -44,7 +44,7 @@ export default function GenaricScreen() {
                 {item === 'گیلری' && <GalleryScreen />}
                 {item === 'نیوز سیکشن' && <NewsSectionScreen />}
                 {item === 'دارالافتاء' && <DarAlIftaScreen />}
-                {item === 'بلاگ' && <BlogScreen />}
+                {item === 'سوالات پوچھیے' && <AskQuestionScreen />}
                 {item === 'رابطہ کریں' && <ContactUsScreen />}
             </View>
         </ScreenWrapper>

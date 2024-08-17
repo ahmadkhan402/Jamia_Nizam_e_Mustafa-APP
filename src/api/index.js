@@ -32,9 +32,22 @@ const getResultData = async (rollNumber) => {
     try {
         const response = await axios.get(`https://nizamemustafa.com/GetStudentResults_Api.php?rollno=${rollNumber}`)
 
-        return response.message
+        if (response.data.success) {
+            return response.data
+        } else {
+            return response.message
+        }
     } catch (error) {
         return error.response.data
     }
 }
-export { getYoutubeLink, addmissionData, getLibraryData, getResultData }
+const addQuestionData = async (data) => {
+    try {
+        const response = await axios.post("https://nizamemustafa.com/question_api.php", data)
+        return response.data
+    } catch (error) {
+        console.error("Error sending Addmission data :", error);
+        throw error; // Optional: rethrow the error if you want to handle it elsewhere
+    }
+}
+export { getYoutubeLink, addmissionData, getLibraryData, getResultData, addQuestionData }
