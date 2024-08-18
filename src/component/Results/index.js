@@ -7,6 +7,7 @@ import Button from '../Button';
 import { getResultData } from '../../api';
 import { FlashMessage } from '../flashMessage';
 import { ScreenWrapper } from 'react-native-screen-wrapper';
+import Loader from '../loader';
 
 export default function ResultsScreen() {
     const [form, setForm] = useState({
@@ -17,6 +18,7 @@ export default function ResultsScreen() {
         rollNumber: ''
     });
     const [resultData, setResultData] = useState(null);
+    const [loading, setLoading] = useState(false)
     const handleInputChange = (field, value) => {
         setForm({ ...form, [field]: value });
     };
@@ -24,11 +26,14 @@ export default function ResultsScreen() {
     const handleSubmit = async () => {
         try {
             if (form.rollNumber) {
+                setLoading(true)
                 const res = await getResultData(form.rollNumber)
 
                 if (res && res?.success === true) {
                     setResultData(res?.image)
+                    setLoading(false)
                 } else {
+                    setLoading(false)
                     setResultData(null)
                     FlashMessage({ message: 'Please Enter Valid Roll Number', fail: true })
 
@@ -48,93 +53,95 @@ export default function ResultsScreen() {
         <ScreenWrapper scrollType='scroll' statusBarColor={AppCollors.primary}>
             {/* <ScrollView contentContainerStyle={styles.container}> */}
             <View style={styles.container}>
-                <View style={styles.boxgrey}>
-                    <Text style={styles.bggreen}>رزلٹ تلاش کریں</Text>
-                    <View style={styles.blog}>
-                        <View style={styles.forms}>
-                            <View style={styles.formGroup}>
-                                <Text style={styles.label}>جنس کا انتخاب</Text>
-                                <Picker
-                                    selectedValue={form.gender}
-                                    onValueChange={(itemValue) => handleInputChange('gender', itemValue)}
-                                    style={styles.picker}
-                                >
-                                    <Picker.Item label="طالبات" value="female" />
-                                    <Picker.Item label="طلبہ" value="male" />
-                                </Picker>
-                            </View>
-                            <View style={styles.formGroup}>
-                                <Text style={styles.label}>سیشن کا انتخاب</Text>
-                                <Picker
-                                    selectedValue={form.session}
-                                    onValueChange={(itemValue) => handleInputChange('session', itemValue)}
-                                    style={styles.picker}
-                                >
-                                    <Picker.Item label="ضمنی" value="subsidiary" />
-                                    <Picker.Item label="سالانہ" value="annual" />
-                                </Picker>
-                            </View>
-                            <View style={styles.formGroup}>
-                                <Text style={styles.label}>سال</Text>
-                                <Picker
-                                    selectedValue={form.year}
-                                    onValueChange={(itemValue) => handleInputChange('year', itemValue)}
-                                    style={styles.picker}
-                                >
-                                    <Picker.Item label="2015ء" value="2015" />
-                                    <Picker.Item label="2016ء" value="2016" />
-                                    <Picker.Item label="2017ء" value="2017" />
-                                    <Picker.Item label="2018ء" value="2018" />
-                                    <Picker.Item label="2019ء" value="2019" />
-                                    <Picker.Item label="2020ء" value="2020" />
-                                    <Picker.Item label="2021ء" value="2021" />
-                                    <Picker.Item label="2022ء" value="2022" />
-                                    <Picker.Item label="2023ء" value="2023" />
-                                    <Picker.Item label="2024ء" value="2024" />
-                                    <Picker.Item label="2025ء" value="2025" />
-                                </Picker>
-                            </View>
-                            <View style={styles.formGroup}>
-                                <Text style={styles.label}>درجہ کا انتخاب</Text>
-                                <Picker
-                                    selectedValue={form.grade}
-                                    onValueChange={(itemValue) => handleInputChange('grade', itemValue)}
-                                    style={styles.picker}
-                                >
-                                    <Picker.Item label="متوسطہ" value="middle" />
-                                    <Picker.Item label="عامہ اول" value="aama1" />
-                                    <Picker.Item label="عامہ دوئم" value="aama2" />
-                                    <Picker.Item label="خاصہ اول" value="khassa1" />
-                                    <Picker.Item label="خاصہ دوئم" value="khassa2" />
-                                    <Picker.Item label="عالیہ اول" value="aaliya1" />
-                                    <Picker.Item label="عالیہ دوئم" value="aaliya2" />
-                                </Picker>
-                            </View>
-                            <View style={styles.formGroup}>
-                                <Text style={styles.label}>رجسٹریشن نمبر :</Text>
-                                <TextInput
-                                    style={styles.input}
-                                    value={form.rollNumber}
-                                    onChangeText={(value) => handleInputChange('rollNumber', value)}
-                                    placeholder="رجسٹریشن نمبر"
-                                    keyboardType="numeric"
-                                />
-                            </View>
-                            <Button label={"نتیجہ دیکھیں"} press={handleSubmit} />
+                {loading ? <Loader isVisible={loading} /> : (
 
-                            {resultData && (
-                                <View style={styles.resultContainer}>
-                                    <Text style={styles.rollNumberText}>Roll Number: {form.rollNumber}</Text>
-                                    <Button textStyle={styles.downloadButtonText} style={styles.downloadButton} label={"Download Result"} press={() => Linking.openURL(`https://nizamemustafa.com/images/Results/${resultData}`)} />
-
+                    <View style={styles.boxgrey}>
+                        <Text style={styles.bggreen}>رزلٹ تلاش کریں</Text>
+                        <View style={styles.blog}>
+                            <View style={styles.forms}>
+                                <View style={styles.formGroup}>
+                                    <Text style={styles.label}>جنس کا انتخاب</Text>
+                                    <Picker
+                                        selectedValue={form.gender}
+                                        onValueChange={(itemValue) => handleInputChange('gender', itemValue)}
+                                        style={styles.picker}
+                                    >
+                                        <Picker.Item label="طالبات" value="female" />
+                                        <Picker.Item label="طلبہ" value="male" />
+                                    </Picker>
                                 </View>
-                            )}
+                                <View style={styles.formGroup}>
+                                    <Text style={styles.label}>سیشن کا انتخاب</Text>
+                                    <Picker
+                                        selectedValue={form.session}
+                                        onValueChange={(itemValue) => handleInputChange('session', itemValue)}
+                                        style={styles.picker}
+                                    >
+                                        <Picker.Item label="ضمنی" value="subsidiary" />
+                                        <Picker.Item label="سالانہ" value="annual" />
+                                    </Picker>
+                                </View>
+                                <View style={styles.formGroup}>
+                                    <Text style={styles.label}>سال</Text>
+                                    <Picker
+                                        selectedValue={form.year}
+                                        onValueChange={(itemValue) => handleInputChange('year', itemValue)}
+                                        style={styles.picker}
+                                    >
+                                        <Picker.Item label="2015ء" value="2015" />
+                                        <Picker.Item label="2016ء" value="2016" />
+                                        <Picker.Item label="2017ء" value="2017" />
+                                        <Picker.Item label="2018ء" value="2018" />
+                                        <Picker.Item label="2019ء" value="2019" />
+                                        <Picker.Item label="2020ء" value="2020" />
+                                        <Picker.Item label="2021ء" value="2021" />
+                                        <Picker.Item label="2022ء" value="2022" />
+                                        <Picker.Item label="2023ء" value="2023" />
+                                        <Picker.Item label="2024ء" value="2024" />
+                                        <Picker.Item label="2025ء" value="2025" />
+                                    </Picker>
+                                </View>
+                                <View style={styles.formGroup}>
+                                    <Text style={styles.label}>درجہ کا انتخاب</Text>
+                                    <Picker
+                                        selectedValue={form.grade}
+                                        onValueChange={(itemValue) => handleInputChange('grade', itemValue)}
+                                        style={styles.picker}
+                                    >
+                                        <Picker.Item label="متوسطہ" value="middle" />
+                                        <Picker.Item label="عامہ اول" value="aama1" />
+                                        <Picker.Item label="عامہ دوئم" value="aama2" />
+                                        <Picker.Item label="خاصہ اول" value="khassa1" />
+                                        <Picker.Item label="خاصہ دوئم" value="khassa2" />
+                                        <Picker.Item label="عالیہ اول" value="aaliya1" />
+                                        <Picker.Item label="عالیہ دوئم" value="aaliya2" />
+                                    </Picker>
+                                </View>
+                                <View style={styles.formGroup}>
+                                    <Text style={styles.label}>رجسٹریشن نمبر :</Text>
+                                    <TextInput
+                                        style={styles.input}
+                                        value={form.rollNumber}
+                                        onChangeText={(value) => handleInputChange('rollNumber', value)}
+                                        placeholder="رجسٹریشن نمبر"
+                                        keyboardType="numeric"
+                                    />
+                                </View>
+                                <Button label={"نتیجہ دیکھیں"} press={handleSubmit} />
+
+                                {resultData && (
+                                    <View style={styles.resultContainer}>
+                                        <Text style={styles.rollNumberText}>Roll Number: {form.rollNumber}</Text>
+                                        <Button textStyle={styles.downloadButtonText} style={styles.downloadButton} label={"Download Result"} press={() => Linking.openURL(`https://nizamemustafa.com/images/Results/${resultData}`)} />
+
+                                    </View>
+                                )}
+                            </View>
                         </View>
                     </View>
-                </View>
 
 
-
+                )}
 
             </View>
             {/* </ScrollView> */}
@@ -144,6 +151,7 @@ export default function ResultsScreen() {
 
 const styles = StyleSheet.create({
     container: {
+        flex: 1,
         padding: 20,
     },
     boxgrey: {

@@ -6,12 +6,14 @@ import { Picker } from '@react-native-picker/picker';
 import FrontView from '../frontView';
 import { Height, Width } from '../../utils/Dimentions';
 import { getAllQuestions, getQuestionList } from '../../api';
+import Loader from '../loader';
 
 export default function DarAlIftaScreen() {
     // Single state to manage the selected value of the Picker
     const [selectedQuestionTitle, setSelectedQuestionTitle] = useState("");
     const [questionList, setQuestionList] = useState([]);
     const [allQuestion, setAllQuestion] = useState([]);
+    const [loading, setLoading] = useState(false)
 
     const pickerOptions = [
         { label: "سوال کا عنوان منتخب کریں۔", value: "" },
@@ -68,11 +70,14 @@ export default function DarAlIftaScreen() {
 
     const getAllQuestionData = async () => {
         try {
+            setLoading(true);
             const response = await getAllQuestions();
             if (response && response?.status === "success") {
                 console.log("res", response);
                 setQuestionList(response?.data);
+                setLoading(false);
             } else {
+                setLoading(false)
                 setQuestionList([]);
             }
         } catch (error) {
@@ -103,39 +108,43 @@ export default function DarAlIftaScreen() {
     return (
         <ScreenWrapper scrollType="scroll" statusBarColor={AppCollors.primary}>
             <View style={styles.container}>
-                <FrontView text={"آن لائن فتویٰ"} />
-                <Text style={styles.titleText}>آن لائن فتوی (سوالات اور جوابات حاصل کرنے کے لیے سوال کے عنوان پر کلک کریں)</Text>
-                <Text style={[styles.bggreen, { width: Width(90) }]}>سوال کا عنوان</Text>
-                <View style={styles.itemContainer}>
-                    <Picker
-                        selectedValue={selectedQuestionTitle}
-                        onValueChange={(itemValue) => setSelectedQuestionTitle(itemValue)}
-                        style={styles.picker}
-                    >
-                        {pickerOptions.map((option, index) => (
-                            <Picker.Item key={index} label={option.label} value={option.value} />
-                        ))}
-                    </Picker>
-                </View>
-                <View style={styles.questionView}>
-
-
-                    <Text style={styles.bggreen}>سوالات اور جوابات</Text>
-                    {questionList?.length !== 0 ? (
-                        <View style={styles.questionItemContainer}>
-
-                            {questionList?.map((item, index) => (
-                                <View style={styles.questionItem} key={index}>
-                                    <Text style={styles.questionTitle} numberOfLines={2}>{item.name} {(item.date).substring(0, 10)}</Text>
-                                    <Text style={styles.questionText}><Text style={{ fontWeight: 'bold' }}>Question:</Text> {item?.question}</Text>
-                                    <Text style={styles.answerText}><Text style={{ fontWeight: 'bold' }}>Answer:</Text> {item?.answare}</Text>
-                                </View>
-                            ))}
+                {loading ? <Loader isVisible={loading} /> : (
+                    <View style={styles.container}>
+                        <FrontView text={"آن لائن فتویٰ"} />
+                        <Text style={styles.titleText}>آن لائن فتوی (سوالات اور جوابات حاصل کرنے کے لیے سوال کے عنوان پر کلک کریں)</Text>
+                        <Text style={[styles.bggreen, { width: Width(90) }]}>سوال کا عنوان</Text>
+                        <View style={styles.itemContainer}>
+                            <Picker
+                                selectedValue={selectedQuestionTitle}
+                                onValueChange={(itemValue) => setSelectedQuestionTitle(itemValue)}
+                                style={styles.picker}
+                            >
+                                {pickerOptions.map((option, index) => (
+                                    <Picker.Item key={index} label={option.label} value={option.value} />
+                                ))}
+                            </Picker>
                         </View>
-                    ) : (
-                        <Text style={styles.noQuestion}>کوئی سوالات یا جوابات دستیاب نہیں ہیں۔</Text>
-                    )}
-                </View>
+                        <View style={styles.questionView}>
+
+
+                            <Text style={styles.bggreen}>سوالات اور جوابات</Text>
+                            {questionList?.length !== 0 ? (
+                                <View style={styles.questionItemContainer}>
+
+                                    {questionList?.map((item, index) => (
+                                        <View style={styles.questionItem} key={index}>
+                                            <Text style={styles.questionTitle} numberOfLines={2}>{item.name} {(item.date).substring(0, 10)}</Text>
+                                            <Text style={styles.questionText}><Text style={{ fontWeight: 'bold' }}>Question:</Text> {item?.question}</Text>
+                                            <Text style={styles.answerText}><Text style={{ fontWeight: 'bold' }}>Answer:</Text> {item?.answare}</Text>
+                                        </View>
+                                    ))}
+                                </View>
+                            ) : (
+                                <Text style={styles.noQuestion}>کوئی سوالات یا جوابات دستیاب نہیں ہیں۔</Text>
+                            )}
+                        </View>
+                    </View>
+                )}
             </View>
         </ScreenWrapper>
     );

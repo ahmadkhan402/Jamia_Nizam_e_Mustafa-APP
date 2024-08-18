@@ -5,14 +5,21 @@ import AppCollors from '../../utils/AppCollors';
 import FrontView from '../frontView';
 import { Height, Width } from '../../utils/Dimentions';
 import { getPastStudents } from '../../api';
+import Loader from '../loader';
 
 export default function PastStudents() {
     const [data, setData] = useState([])
+    const [loading, setLoading] = useState(false)
     const getApiRequest = async () => {
+        setLoading(true)
         let res = await getPastStudents()
         if (res && res?.success === true) {
             console.log(res);
             setData(res?.Paststudents)
+            setLoading(false)
+
+        } else {
+            setLoading(false)
 
         }
 
@@ -24,17 +31,18 @@ export default function PastStudents() {
         <ScreenWrapper scrollType='scroll' statusBarColor={AppCollors.primary}>
             <FrontView text={'سابقه طلباء'} />
             <View style={styles.container} >
-                <View style={styles.viewItemContainer}>
-                    {data.map((item) => (
-                        <View style={styles.itemContainer} key={item.id}>
-                            <Image source={{ uri: `https://nizamemustafa.com/images/paststudents/${item.image}` }} style={styles.img} />
-                            <Text style={styles.stuNameText}>{item.studentname}</Text>
-                            <Text style={styles.text}>Passing Year: {item.passingyear}</Text>
-                            <Text style={styles.text}>City: {item.city}</Text>
-                        </View>
-                    ))}
-                </View>
-
+                {loading ? <Loader isVisible={loading} /> : (
+                    <View style={styles.viewItemContainer}>
+                        {data.map((item) => (
+                            <View style={styles.itemContainer} key={item.Id}>
+                                <Image source={{ uri: `https://nizamemustafa.com/images/paststudents/${item.image}` }} style={styles.img} />
+                                <Text style={styles.stuNameText}>{item.studentname}</Text>
+                                <Text style={styles.text}>Passing Year: {item.passingyear}</Text>
+                                <Text style={styles.text}>City: {item.city}</Text>
+                            </View>
+                        ))}
+                    </View>
+                )}
             </View>
         </ScreenWrapper>
     );
@@ -67,7 +75,8 @@ const styles = StyleSheet.create({
         alignItems: 'center',
         fontSize: 16,
         fontWeight: 'bold',
-        marginVertical: Height(1)
+        marginVertical: Height(1),
+        textAlign: 'center',
     },
     img: {
         width: Width(30),
