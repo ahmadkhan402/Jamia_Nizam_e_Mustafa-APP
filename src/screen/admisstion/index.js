@@ -16,6 +16,7 @@ import ScreenNames from '../../routes/route';
 import { FlashMessage } from '../../component/flashMessage';
 import DateTimePickerModal from 'react-native-modal-datetime-picker';
 import CustomModal from '../../component/customModal';
+import DatePicker from 'react-native-date-picker';
 
 export default function AddmissionScreen() {
     const route = useRoute();
@@ -236,13 +237,24 @@ export default function AddmissionScreen() {
                                     editable={false}
                                 />
                             </TouchableOpacity>
-                            <DateTimePickerModal
+                            <DatePicker
+                                modal
+                                open={isDatePickerVisible}
+                                date={new Date()}
+                                onConfirm={(date) => {
+                                    hideDatePicker
+                                    handleConfirm(date);
+                                }}
+                                onCancel={hideDatePicker}
+                            />
+
+                            {/* <DateTimePickerModal
                                 date={new Date()}
                                 isVisible={isDatePickerVisible}
                                 mode="date"
                                 onConfirm={handleConfirm}
                                 onCancel={hideDatePicker}
-                            />
+                            /> */}
                         </View>
                         <View style={styles.formGroup}>
                             <Text style={styles.label}>Gender (جنس) <Text style={styles.required}>*</Text></Text>
