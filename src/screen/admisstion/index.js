@@ -14,9 +14,9 @@ import Checkbox from 'expo-checkbox';
 import Button from '../../component/Button';
 import ScreenNames from '../../routes/route';
 import { FlashMessage } from '../../component/flashMessage';
-import DateTimePickerModal from 'react-native-modal-datetime-picker';
 import CustomModal from '../../component/customModal';
-import DatePicker from 'react-native-date-picker';
+
+
 
 export default function AddmissionScreen() {
     const route = useRoute();
@@ -185,12 +185,19 @@ export default function AddmissionScreen() {
         setDatePickerVisibility(false);
     };
 
-    const handleConfirm = (date) => {
-        const formattedDate = `${("0" + date.getDate()).slice(-2)}/${("0" + (date.getMonth() + 1)).slice(-2)}/${date.getFullYear()}`;
-        handleInputChange('dob', formattedDate);
-        hideDatePicker();
-    };
-
+    // const handleConfirm = (date) => {
+    //     const formattedDate = `${("0" + date).slice(-2)}/${("0" + (date + 1)).slice(-2)}/${date}`;
+    //     handleInputChange('dob', formattedDate);
+    //     hideDatePicker();
+    // };
+    // const handleConfirm = (selectedDate) => {
+    //     console.log('====================================');
+    //     console.log("sdcscs", selectedDate);
+    //     console.log('====================================');
+    //     const formattedDate = dayjs(selectedDate).format('DD/MM/YYYY');
+    //     handleInputChange('dob', formattedDate);
+    //     hideDatePicker();
+    // };
     useEffect(() => {
         const res = getCountryDataList()
         const countrylist = res.map((item) => {
@@ -199,6 +206,35 @@ export default function AddmissionScreen() {
         setCountryList(countrylist)
 
     }, [])
+
+    const handleInputChange2 = (field, value) => {
+        if (field === 'dob') {
+            const formattedValue = formatDateString(value);
+            if (formattedValue !== false) {
+                setForm({ ...form, [field]: formattedValue });
+            }
+        } else {
+            setForm({ ...form, [field]: value });
+        }
+    };
+
+    const formatDateString = (value) => {
+        // Allow only numeric input
+        const numericValue = value.replace(/[^0-9]/g, '');
+
+        // Format DD/MM/YYYY
+        if (numericValue.length <= 2) {
+            return numericValue;
+        } else if (numericValue.length <= 4) {
+            return `${numericValue.slice(0, 2)}/${numericValue.slice(2)}`;
+        } else if (numericValue.length <= 8) {
+            return `${numericValue.slice(0, 2)}/${numericValue.slice(2, 4)}/${numericValue.slice(4)}`;
+        } else {
+            Alert.alert("Invalid Date", "Please enter a valid date in the format DD/MM/YYYY.");
+            return false;
+        }
+    };
+
     return (
         <ScreenWrapper scrollType='scroll' statusBarColor={AppCollors.primary}>
             <FrontView text={'داخلہ فارم (آن لائن کورسز)'} text1={departmentText} />
@@ -228,16 +264,25 @@ export default function AddmissionScreen() {
                         </View>
                         <View style={styles.formGroup}>
                             <Text style={styles.label}>Date of Birth (تاریخ پیدائش) <Text style={styles.required}>*</Text></Text>
-                            <TouchableOpacity onPress={showDatePicker}>
-                                <TextInput
+                            {/* <TouchableOpacity onPress={showDatePicker}> */}
+                            <TextInput
 
-                                    style={styles.input}
-                                    value={form.dob}
-                                    placeholder="DD/MM/YYYY"
-                                    editable={false}
+                                style={styles.input}
+                                value={(form.dob)}
+                                placeholder="DD/MM/YYYY"
+                                onChangeText={(value) => handleInputChange2('dob', value)}
+                                keyboardType='numeric'
+                            />
+                            {/* </TouchableOpacity> */}
+                            {/* {isDatePickerVisible && (
+                                <DateTimePicker
+                                    mode="date"
+                                    value={date}
+                                    onChange={(params) => setDate(params.date)}
+                                // onCancel={hideDatePicker}
                                 />
-                            </TouchableOpacity>
-                            <DatePicker
+                            )} */}
+                            {/* <DatePicker
                                 modal
                                 open={isDatePickerVisible}
                                 date={new Date()}
@@ -246,15 +291,15 @@ export default function AddmissionScreen() {
                                     handleConfirm(date);
                                 }}
                                 onCancel={hideDatePicker}
-                            />
+                            /> */}
 
                             {/* <DateTimePickerModal
                                 date={new Date()}
                                 isVisible={isDatePickerVisible}
                                 mode="date"
                                 onConfirm={handleConfirm}
-                                onCancel={hideDatePicker}
-                            /> */}
+                                onCancel={hideDatePicker} */}
+                            {/* /> */}
                         </View>
                         <View style={styles.formGroup}>
                             <Text style={styles.label}>Gender (جنس) <Text style={styles.required}>*</Text></Text>
